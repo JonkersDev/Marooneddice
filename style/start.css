@@ -1,0 +1,57 @@
+@font-face {
+  font-family: origram;
+  src: url(origames.ttf);
+}
+
+body {
+  background: black;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  cursor: url(../images/mouse.svg), auto;
+}
+
+body .svg-test {
+  position: fixed;
+  left: 50vh;
+  top: 50%;
+}
+
+.bg {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+  max-height: 120vh;
+  max-width: 120vw;
+  -webkit-transform: translate(-50%);
+          transform: translate(-50%);
+}
+
+.start-game {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, 50%);
+          transform: translate(-50%, 50%);
+  z-index: 1;
+  background-image: url(../images/btn.svg);
+  background-size: 100% 100%;
+  width: 25vh;
+  height: 10vh;
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-family: origram;
+  font-size: 3vh;
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+  cursor: url(../images/mouse.svg), auto;
+}
+
+.start-game:hover {
+  -webkit-transform: translate(-50%, 50%) scale(1.1);
+          transform: translate(-50%, 50%) scale(1.1);
+}
+/*# sourceMappingURL=start.css.map */
