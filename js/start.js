@@ -497,7 +497,7 @@ const Save = ()=>{
   const resetPlayerObj = ()=>{
     pl = JSON.stringify({
       user: 'HannekePanneke',
-      name: 'Charles Vane',
+      name: 'Charles',
       hp: 30,
       mhp: 30,
       treasures: [],
@@ -521,17 +521,16 @@ const Save = ()=>{
       floorLvl: 0,
       stage: 0,
       score: 0,
-      comTr: [C1, C3, C25],
+      comTr: [C1, C3, C25, C33],
       uncomTr: [C4, C7, C8, C2, C18, C29],
-      rareTr: [C27, C6],
+      rareTr: [C27, C6, C32],
       shopTr: [C19, C20, C21, C23, C8],
       gemArr: [C12, C11, C16, C14, C15],
       mayanArr: [C13, C26, C28, C22],
-      TreasureArr: [pl.comTr, pl.comTr, pl.comTr, pl.comTr, pl.uncomTr, pl.uncomTr, pl.uncomTr, pl.rareTr, pl.rareTr, pl.gemArr],
       seed: [],
       CostumsSeed: '',
-      landEvents: ['Market', 'MonkeyJungle', 'shadyMerchant', 'intoTheFog', 'piratecave'],
-      seaEvents: ['Gamble', 'Dive', 'UnderwaterChest'],
+      landEvents: ['Market', 'MonkeyJungle', 'shadyMerchant', 'intoTheFog', 'piratecave', 'Butcher', 'DeadPirate', 'CursedHammer', 'Shrine'],
+      seaEvents: ['Gamble', 'Dive', 'UnderwaterChest', 'BigFish', 'Whirlpool'],
     })
   }
 

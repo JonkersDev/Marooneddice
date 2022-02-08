@@ -20,6 +20,10 @@ fullScr.addEventListener('click', ()=>{
 });
 body.append(fullScr)
 
+document.querySelector('.set-icon').addEventListener('click', ()=>{
+    body.requestFullscreen();
+})
+
 let sleep = (ms) => {
     return new Promise((resolve) => setTimeout(resolve, ms));
   };

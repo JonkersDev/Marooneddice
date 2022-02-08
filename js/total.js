@@ -1,26 +1,3 @@
-// let interaction = false;
-// const body = document.body;
-// const checkInter = ()=>{
-//   interaction = true;
-//   body.removeEventListener('click', checkInter);
-// }
-// body.addEventListener('click', checkInter);
-
-// let fullScr = document.createElement('div');
-// fullScr.innerText = 'Rotate your screen to lanndscape and click the screen to continue'
-// fullScr.addEventListener('click', ()=>{
-//     document.body.requestFullscreen();
-//     fullScr.remove();
-// });
-
-// let sleep = (ms) => {
-//     return new Promise((resolve) => setTimeout(resolve, ms));
-//   };
-
-// while(interaction == false){
-//     await sleep(500);
-// };
-
 
 const soundBoard = {
   B: "bomb",
@@ -645,7 +622,7 @@ C0 = {
           enterUnkownLand(
             document.querySelector(".scr"),
             document.querySelector(".continue-btn"),
-            piratecaveB
+            'piratecaveB'
           );
           resCave = true;
         }
@@ -842,7 +819,26 @@ C0 = {
     ],
     enTr: ["C17"],
     type: "B",
+    onDeath: 'endStage'
   };
+
+  let endStageA = false
+
+  const endStage = ()=>{
+   return new Promise((resove)=>{
+       document.querySelector(".scr").childNodes.forEach((e) => {
+        e.style = "transition: 500ms; opacity: 0; pointer-event: none;";
+      });
+     if(endStageA == false){
+         enterUnkownLand(
+             document.querySelector(".scr"),
+             document.querySelector(".continue-btn"),
+             'treasureChest'
+             );
+             endStageA = true;
+     } 
+   })
+  }
   
   let Surgeon = {
     name: `Surgeon`,
@@ -869,15 +865,29 @@ C0 = {
     [Gunner],
     [cooper, deckhand],
     [lostSailor, helmsman],
-    [lostSailor, helmsman],
+    [lostSailor, lostSailor, deckhand],
+    [deckhand, helmsman],
+    [lostSailor, deckhand, deckhand],
     [cooper, Gunner],
-    [cooper, Gunner],
+    [helmsman, Gunner],
+    [lostSailor, lostSailor, helmsman],
+    [lostSailor, Gunner, helmsman],
+    [deckhand, Gunner, helmsman],
+    [cooper, Gunner, helmsman],
+    [cooper, Gunner, Gunner],
+    [cooper, helmsman, Gunner],
+    [cooper, helmsman, Gunner],
+    [cooper, helmsman, Gunner],
+    [cooper, helmsman, Gunner],
+    [cooper, helmsman, Gunner],
+    [cooper, helmsman, Gunner],
+    [cooper, helmsman, Gunner],
   ];
   
-  const eliteEnemys = [[cook], [blacksmith], [blacksmith], [cook], [blacksmith], [blacksmith]];
+  const eliteEnemys = [[cook], [blacksmith], [blacksmith], [cook], [blacksmith], [blacksmith], [blacksmith], [blacksmith], [blacksmith]];
   const mayanEnemys = [[Horado], [Shamaan], [Horado, Shamaan], [Horado, Horado, Shamaan]];
   
-  const allenemies = [lostSailor, deckhand, cooper, helmsman, Gunner, cook, blacksmith]
+  const allenemies = [lostSailor, deckhand, cooper, helmsman, Gunner, cook, blacksmith, Horado, Shamaan, seymor];
   const battleModal = document.querySelector(".scr-transition");
   let pl = {};
   
@@ -1338,7 +1348,6 @@ C0 = {
   const Load = ()=>{
     pl = JSON.parse(window.localStorage.getItem('player'));
     pl.trCon = document.querySelector(".treasures");
-  
     makeElmnt("div","",`<p>${pl.user}</p><p>${pl.name}</p>`,document.querySelector(".pl-stats"));
     let plSt = makeElmnt("div", "", "", document.querySelector(".pl-stats"));
     pl.hptrack = makeElmnt("div","hp-track",`<span>H</span>${pl.hp}/${pl.mhp}`,plSt);
@@ -1367,10 +1376,6 @@ C0 = {
   
   
   const Save = ()=>{
-    resetPlayerObj();
-    console.log(pl.floorLvl);
-    
-    // pl.treasures = [C1]
     pl.SavedTreasures = [];
     pl.treasures.forEach((t)=>{
       pl.SavedTreasures.push(t.id);
@@ -1834,8 +1839,6 @@ const makeMap = async () => {
   }, 200);
 };
 
-let templvl = parseInt(pl.floorLvl)
-
 const makeWave = async (wave, oldWave) => {
   let offPlaceholder = 0;
   let placeholder = makeElmnt("div", "placeholder");
@@ -1857,7 +1860,7 @@ const makeWave = async (wave, oldWave) => {
     wave.forEach(async (r) => {
       r.wave = waveCount;
       r.type = 0;
-      r.room = makeElmnt("div", `room f${waveCount + templvl}`);
+      r.room = makeElmnt("div", `room f${waveCount + pl.floorLvl}`);
       r.room.style.left = `${wOff + 0.8}vh`;
       let offSet = await random(seed[0], 9);
       r.room.style.top = `${(9 / 100) * offSet * 9 + 3}vh`;
@@ -2208,7 +2211,7 @@ const enterRoom = async (type) => {
       pl.floorLvl++;
       button.addEventListener("click", () => {
         if(pl.stage > 2) pl.stage = 0;
-        if(type == "B"){
+        if(combatType == "B"){
           if(pl.stage == 2){
             EndGame(true);
             return;
@@ -2795,9 +2798,6 @@ const createChar = (char, container) => {
 
   //CREATE ELEMENTS
   makeElmnt("p", "name", char.name, char.container);
-  // char.img = makeElmnt("img", "img", "", char.container);
-  // char.img.src = `./images/char/${char.name}.svg`;
-  console.log(char.name)
   char.img = getSVG(char.name);
   char.container.append(char.img);
   char.img.classList.add('img');
@@ -3698,9 +3698,12 @@ const booty = async () => {
         let newTreasure = makeElmnt(
           "li",
           "loot",
-          `<span><img src="./images/treas/${t.name}.svg" style="position: relative; transform: translate(-50%)"></span> ${t.name}`,
+          `<span></span> ${t.name}`,
           rewardCon
         );
+        let svg = getSVG(t.id);
+        svg.style = 'position: relative; transform: translate(-50%);'
+        newTreasure.firstChild.append(svg);
         newTreasure.addEventListener("mouseenter", () => {
           addToolTip(0, 0, 0, t.tip);
         });
@@ -4001,31 +4004,49 @@ royalNavy = {
             addResource(0, val);
           });
           //CREATE TREASURE
-          for (i = 0; i < amount; i++) {
-            let trarr = [pl.comTr, pl.comTr, pl.comTr, pl.comTr, pl.uncomTr, pl.uncomTr, pl.uncomTr, pl.rareTr, pl.rareTr, pl.gemArr];
-            trarr.forEach(a=>{
-              if(a.length == 0){
-                removeFromArray(trarr, a);
-              }
-            })
-            await shuffle(trarr, seed[5]);
-            let t = trarr[0][0];
-            removeFromArray(trarr[0], t);
+          if(combatType == 'B'){
             let newTreasure = makeElmnt(
-              "li",
-              "loot",
-              `<span><img src="./images/treas/${t.name}.svg" style="position: relative; transform: translate(-50%)"></span> ${t.name}`,
-              rewardCon
-            );
-            hoverSound(newTreasure, 'hover');
-            newTreasure.addEventListener("mouseenter", () => {
-              addToolTip(0, 0, 0, t.tip);
-            });
-            newTreasure.addEventListener("mouseleave", removeToolTip);
-            newTreasure.addEventListener("click", () => {
-              newTreasure.remove();
-              addTreasure(window[t.id], pl);
-            });
+                "li",
+                "loot",
+                `<span>d</span> + 1 new dice`,
+                rewardCon
+              );
+              hoverSound(newTreasure, 'hover');
+              newTreasure.addEventListener("click", () => {
+                pl.dieArr.push({faceVal: [['S'], ['S'], ['S'], ['F'], ['F'], ['C']]});
+                newTreasure.remove();
+                upgradeFace(['S']);
+              });
+          } else {
+            for (i = 0; i < amount; i++) {
+                let trarr = [pl.comTr, pl.comTr, pl.comTr, pl.comTr, pl.uncomTr, pl.uncomTr, pl.uncomTr, pl.rareTr, pl.rareTr, pl.gemArr];
+                trarr.forEach(a=>{
+                  if(a.length == 0){
+                    removeFromArray(trarr, a);
+                  }
+                })
+                await shuffle(trarr, seed[5]);
+                let t = trarr[0][0];
+                removeFromArray(trarr[0], t);
+                let newTreasure = makeElmnt(
+                  "li",
+                  "loot",
+                  `<span></span> ${t.name}`,
+                  rewardCon
+                );
+                let svg = getSVG(t.id);
+                svg.style = `position: relative; transform: translate(-50%);`;
+                newTreasure.firstChild.append(svg);
+                hoverSound(newTreasure, 'hover');
+                newTreasure.addEventListener("mouseenter", () => {
+                  addToolTip(0, 0, 0, t.tip);
+                });
+                newTreasure.addEventListener("mouseleave", removeToolTip);
+                newTreasure.addEventListener("click", () => {
+                  newTreasure.remove();
+                  addTreasure(window[t.id], pl);
+                });
+              }
           }
         },
       },
@@ -4796,8 +4817,9 @@ royalNavy = {
       treas.tr = sTr[i][0];
       removeFromArray(sTr[i], treas.tr);
       treas.pr = (await random(seed[7], 9)) + i * 20 + 60;
-      let img = makeElmnt("img", "tr-img", "", treas);
-      img.src = `./images/treas/${treas.tr.name}.svg`;
+      let img = getSVG(treas.tr.id)
+      img.classList.add('tr-img');
+      treas.append(img)
       treas.price = makeElmnt("p", "price", `<span>h</span>${treas.pr}`, treas);
       treas.addEventListener("mouseenter", () => {
         addToolTip(0, 0, 0, treas.tr.tip);
@@ -4880,8 +4902,9 @@ royalNavy = {
     pl.treasures.forEach((t) => {
       let treas = makeElmnt("div", "treas", "", sellTabInner);
       treas.pr = t.pr;
-      let img = makeElmnt("img", "tr-img", "", treas);
-      img.src = `./images/treas/${t.name}.svg`;
+      let img = getSVG(t.id);
+      img.classList.add('tr-img');
+      treas.append(img);
       treas.price = makeElmnt("p", "price", `<span>h</span>${treas.pr}`, treas);
       treas.addEventListener("mouseenter", () => {
         addToolTip(0, 0, 0, t.tip);
@@ -5659,10 +5682,8 @@ royalNavy = {
         effect: (button) => {
           playSound('H')
           pl.dieArr.forEach(a=>{
-            console.log(a.faceVal);
             a.faceVal.map((d, i)=>{
               if(d[0] == d[0].toLowerCase()){
-                console.log(a.faceVal[i]);
                 a.faceVal[i] = [];
               } 
             })
@@ -5794,31 +5815,34 @@ royalNavy = {
           return `Give a Hand [ +100 <span class="icon">h</span> ]`;
         },
         effect: (button) => {
+            Butcher.txt = 'off your hand'
           addBrandmark('h');
           addResource(0, 100);
           enterEvent(ButcherA, button);
         },
         tooltip: ()=>{return `<span>h</span>Lose 1 reroll when this dieface is rolled`}
-      },  
-      {
+    },  
+    {
         text: () => {
-          return `Break a leg [ +150 <span class="icon">h</span> ]`;
+            return `Break a leg [ +150 <span class="icon">h</span> ]`;
         },
         effect: (button) => {
-          addBrandmark('w');
-          addResource(0, 150);
-          enterEvent(ButcherA, button);
+            Butcher.txt = 'off your leg'
+            addBrandmark('w');
+            addResource(0, 150);
+            enterEvent(ButcherA, button);
         },
         tooltip: ()=>{return `<span>w</span>Gain 1 weak when this dieface is rolled`}
-      }, 
-      {
+    }, 
+    {
         text: () => {
-          return `An eye for an eyepatch [ +200 <span class="icon">h</span> ]`;
+            return `An eye for an eyepatch [ +200 <span class="icon">h</span> ]`;
         },
         effect: (button) => {
-          addBrandmark('e');
-          addResource(0, 200);
-          enterEvent(ButcherA, button);
+            Butcher.txt = 'out your eye'
+            addBrandmark('e');
+            addResource(0, 200);
+            enterEvent(ButcherA, button);
         },
         tooltip: ()=>{return `<span>e</span>Gain 1 blind when this dieface is rolled`}
       }, 
@@ -5835,7 +5859,7 @@ royalNavy = {
   ButcherA = {
     title: "Butcher",
     text: async () => {
-      return `<i>"Th."</i>`;
+      return `Without any hazetasion the butcher cuts ${Butcher.txt}.<br><br><i>"Thank's for your donation."</i><br><br>You still got some good money out of it.`;
     },
     options: [
       {
@@ -5846,6 +5870,45 @@ royalNavy = {
           button.click();
         }
       }, 
+    ],
+  };
+
+  //Big Fish
+  BigFish = {
+    title: "Big Fish",
+    text: async () => {
+      return `You caught a big tuna!!<br><br>Look at the size of it. Lets feast!`;
+    },
+    options: [
+        {
+            text: () => {
+              return `Eat all of it yourself [ heal to full ]`;
+            },
+            effect: (button) => {
+                heal(pl, 999);
+                document.querySelector(".event-option-list").firstChild.remove();
+                document.querySelector(".event-option-list").firstChild.remove();
+              }
+          },
+          {
+            text: () => {
+              return `Share it with the crew [ + 5 max hp ]`;
+            },
+            effect: (button) => {
+                pl.mhp +=5;
+                heal(pl, 5);
+                document.querySelector(".event-option-list").firstChild.remove();
+                document.querySelector(".event-option-list").firstChild.remove();
+              }
+          },
+          {
+            text: () => {
+              return `Leave`;
+            },
+            effect: (button) => {
+              button.click();
+            }
+          }, 
     ],
   };
   
@@ -5877,6 +5940,9 @@ royalNavy = {
   };
   
   const enterEvent = async (event, button) => {
+      if(event == undefined){
+          event = CursedHammer;
+      }
     //CLEAR CONTAINER
     if (document.querySelector(".event-text")) {
       document.querySelector(".event-text").remove();
@@ -5953,16 +6019,10 @@ royalNavy = {
     makeMap();
     
     await sleep(500);
-    if(pl.stage == 0) enterRoom("?");
+    if(pl.stage == 0) enterRoom("T");
     else enterRoom('pros')
     await sleep(3000);
     body.classList = '';
-    addTreasure(C33, pl);
-    addTreasure(C14, pl);
-    addTreasure(C15, pl);
-    addTreasure(C16, pl);
-    addTreasure(C11, pl);
-    addTreasure(C12, pl);
   };
   
   startNewGame();
