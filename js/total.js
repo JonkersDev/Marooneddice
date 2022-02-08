@@ -1,10 +1,26 @@
-let interaction = false;
-const body = document.body;
-const checkInter = ()=>{
-  interaction = true;
-  body.removeEventListener('click', checkInter);
-}
-body.addEventListener('click', checkInter);
+// let interaction = false;
+// const body = document.body;
+// const checkInter = ()=>{
+//   interaction = true;
+//   body.removeEventListener('click', checkInter);
+// }
+// body.addEventListener('click', checkInter);
+
+// let fullScr = document.createElement('div');
+// fullScr.innerText = 'Rotate your screen to lanndscape and click the screen to continue'
+// fullScr.addEventListener('click', ()=>{
+//     document.body.requestFullscreen();
+//     fullScr.remove();
+// });
+
+// let sleep = (ms) => {
+//     return new Promise((resolve) => setTimeout(resolve, ms));
+//   };
+
+// while(interaction == false){
+//     await sleep(500);
+// };
+
 
 const soundBoard = {
   B: "bomb",
@@ -1542,10 +1558,6 @@ const removeToolTip = () => {
   hov = false;
   tooltip.style.display = "none";
   tooltip.style.opacity = 0;
-};
-
-let sleep = (ms) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
 
