@@ -92,9 +92,8 @@
   position: relative;
   top: -0.3vh;
   color: black;
-  /* text-shadow: -0.1vh -0.1vh 0 #9a784e,
-    0.1vh -0.1vh 0 #9a784e, -0.1vh 0.1vh 0 #9a784e,
-    0.1vh 0.1vh 0 #9a784e; */
+  font-weight: lighter;
+  text-shadow: none;
 }
 
 .die-item .dot .brandmark {

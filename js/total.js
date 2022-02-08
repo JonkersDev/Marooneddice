@@ -1330,7 +1330,8 @@ C0 = {
     document.querySelector(".pl-icon").append(icon);
     pl.treasures = [];
     pl.noTreas = 0;
-    pl.SavedTreasures.forEach(t=>{
+    console.log(pl.SavedTreasures)
+    if(pl.SavedTreasures) pl.SavedTreasures.forEach(t=>{
       t = window[t];
       addTreasure(t, pl);
     });
