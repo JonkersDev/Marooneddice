@@ -2,15 +2,19 @@
 const soundBoard = {
   B: "bomb",
   C: "sword",
+  D: "sword",
+  E: "sword",
   F: "punch",
   G: "shot",
   H: "chime",
   I: "shield",
   J: "reload",
+  K: "punch",
   R: "sword",
   S: "shield",
   T: "bash",
   P: "blow",
+  X: "shield",
   paper: "paper",
   paper2: "paper2",
   scr: "scribble",
@@ -35,13 +39,13 @@ const soundBoard = {
 };
 
 const playSound = (val) => {
- if(soundBoard[val] && interaction){
-  let aud = new Audio(`./sounds/${soundBoard[val]}.mp3`);
-  aud.volume = pl.vol;
-  aud.play();
-  aud.addEventListener("ended", () => {
-    aud.remove();
-  });
+  if(soundBoard[val] && interaction){
+    let aud = new Audio(`./sounds/${soundBoard[val]}.mp3`);
+    aud.volume = pl.vol;
+    aud.play();
+    aud.addEventListener("ended", () => {
+      aud.remove();
+    });
  }
 };
 
@@ -52,20 +56,19 @@ const hoverSound = (elm, aud) => {
 };
 
 
-let doc = '';
-let request = new XMLHttpRequest();
-request.addEventListener('load', (e)=>{
-  doc = makeElmnt('div', '', request.response);
-}, false);
-request.open('GET', 'svg.html', true);
-request.send();
+// let doc = '';
+// let request = new XMLHttpRequest();
+// request.addEventListener('load', (e)=>{
+//   doc = makeElmnt('div', '', request.response);
+// }, false);
+// request.open('GET', 'svg.html', true);
+// request.send();
 
 const getSVG = (svg=>{
   if(!doc.querySelector(`#${svg}`)) return;
   svg = doc.querySelector(`#${svg}`);
   let img = makeElmnt('img', '');
   let xml = (new XMLSerializer).serializeToString(svg);
-  // img.src = "data:image/svg+xml;charset=utf-8," + xml;
   img.src = "data:image/svg+xml;base64,"+btoa(xml);
   return img;
 });
@@ -82,7 +85,7 @@ C0 = {
     removeEffect: (char) => {
       char.noTreas -= 1;
     },
-    tip: 'Start every turn with 1 extra rage',
+    tip: '<p>Start every turn with 1 extra rage</p>',
     pr: 100,
   };
   C1 = {
@@ -95,7 +98,7 @@ C0 = {
     removeEffect: (char) => {
       char.AoH = 0;
     },
-    tip: 'Every time you heal, heal 1 more hp',
+    tip: '<p>Every time you heal, heal 1 more hp</p>',
     pr: 100,
   };
   C2 = {
@@ -108,7 +111,7 @@ C0 = {
     removeEffect: (char) => {
       char.AoC = 0;
     },
-    tip: '<strong class="inline"><span>B</span></strong> deal 1 extra dmg to the targeted enemy',
+    tip: '<p>Deal 1 extra dmg to the targeted enemy with <strong class="inline"><span>B</span></strong></p>',
     pr: 100,
   };
   C3 = {
@@ -121,7 +124,7 @@ C0 = {
     removeEffect: (char) => {
       char.AoD = false;
     },
-    tip: 'Gain 30% more Doubloons after a battle',
+    tip: '<p>Gain 30% more Doubloons after a battle</p>',
     pr: 100,
   };
   C4 = {
@@ -134,7 +137,7 @@ C0 = {
     removeEffect: (char) => {
       char.SC = false;
     },
-    tip: `You can no longer become weakend`,
+    tip: `<p>You can no longer become weakend</p>`,
     pr: 100,
   };
   C5 = {
@@ -147,7 +150,7 @@ C0 = {
     removeEffect: () => {
       pl.dmc = false;
     },
-    tip: `Treasure Chests now contain 2 treasures but you lose 5 Max HP when opening a chest`,
+    tip: `<p>Treasure Chests now contain 2 treasures but you lose 5 Max HP when opening a chest</p>`,
     pr: 120,
   };
   C6 = {
@@ -160,7 +163,7 @@ C0 = {
     removeEffect: (char) => {
       char.BBS = false;
     },
-    tip: `Heal 2 hp at the start of a battle`,
+    tip: `<p>Heal 2 hp at the start of a battle</p>`,
     pr: 100,
   };
   C7 = {
@@ -177,7 +180,7 @@ C0 = {
       char.mhp -= 5;
       heal(char, 0);
     },
-    tip: `Raise your max HP by 5`,
+    tip: `<p>Raise your max HP by 5</p>`,
     pr: 100,
   };
   C8 = {
@@ -212,7 +215,7 @@ C0 = {
       await upgradeFace(face2);
     },
     removeEffect: (char) => {},
-    tip: `Upgrade 2 random diefaces on pickup`,
+    tip: `<p>Upgrade 2 random diefaces on pickup</p>`,
     pr: 20,
   };
   C9 = {
@@ -225,7 +228,7 @@ C0 = {
     removeEffect: (char) => {
       char.sw = false;
     },
-    tip: `When your HP reaches 0, heal 50% of your max HP`,
+    tip: `<p>When your HP reaches 0, heal 50% of your max HP</p>`,
     pr: 120,
   };
   C10 = {
@@ -234,7 +237,7 @@ C0 = {
     mot: "Acts 3:15",
     effect: (char) => {},
     removeEffect: (char) => {},
-    tip: `(Used)<br>When your HP reaches 0, heal 50% of your max HP`,
+    tip: `<p>(Used)<br>When your HP reaches 0, heal 50% of your max HP</p>`,
     pr: 20,
   };
   C11 = {
@@ -249,7 +252,7 @@ C0 = {
       pl.maxRoll--;
       char.Sapphire = false;
     },
-    tip: `Gain 1 extra reroll every turn<br>-&-<br>At the end of your turn gain 1 Shield for each reroll you have left`,
+    tip: `<p>Gain 1 extra reroll every turn<br>-&-<br>At the end of your turn gain 1 Shield for each reroll you have left</p>`,
     pr: 200,
     color: '#0210f2',
   };
@@ -263,7 +266,7 @@ C0 = {
     removeEffect: (char) => {
       char.Ruby = false;
     },
-    tip: `Start every combat with 1 Rage<br>-&-<br>Deal 2 extra damage per rage instead of 1`,
+    tip: `<p>Start every combat with 1 Rage<br>-&-<br>Deal 2 extra damage per rage instead of 1</p>`,
     pr: 200,
     color: '#e0011b',
   };
@@ -277,7 +280,7 @@ C0 = {
     removeEffect: (char) => {
       char.Emerald = false;
     },
-    tip: `Whenever you apply Poison, apply 1 additional Poison<br>-&-<br>Poison decreases by 2 whenever someone ends their turn`,
+    tip: `<p>Whenever you apply Poison, apply 1 additional Poison<br>-&-<br>Poison decreases by 2 whenever someone ends their turn</p>`,
     pr: 200,
     color: '#00db59',
   };
@@ -291,7 +294,7 @@ C0 = {
     removeEffect: (char) => {
       char.Topaz = false;
     },
-    tip: `All enemies gain 1 blind at the start of a battle<br>-&-<br>Blind enemies have a 75% chance to miss a attack`,
+    tip: `<p>All enemies gain 1 blind at the start of a battle<br>-&-<br>Blind enemies have a 75% chance to miss a attack</p>`,
     pr: 200,
     color: '#f3b552',
   };
@@ -301,7 +304,7 @@ C0 = {
     mot: "Acts 3:15",
     effect: (char) => {char.Ame = true},
     removeEffect: (char) => {char.Ame = false;},
-    tip: `Enemies lose 25% of their max hp at the start of battle<br>-&-<br>At the end of your turn deal 1 dmg to every enemy for each reroll you have left`,
+    tip: `<p>Enemies lose 25% of their max hp at the start of battle<br>-&-<br></p>`,
     pr: 200,
     color: '#e785ff',
   };
@@ -317,7 +320,7 @@ C0 = {
       pl.Diamond = false;
       pl.maxRoll--;
     },
-    tip: `Gain 1 extra reroll every turn<br>-&-<br>At the end of your turn deal 1 dmg to every enemy for each reroll you have left`,
+    tip: `<p>Gain 1 extra reroll every turn<br>-&-<br>At the end of your turn deal 1 dmg to every enemy for each reroll you have left</p>`,
     pr: 200,
     color: '#28b6d4',
   };
@@ -466,7 +469,7 @@ C0 = {
     removeEffect: (char) => {
       char.SmB = false;
     },
-    tip: `<p>apply 1 blind to all enemies with <strong class="inline"><span>B</span></strong></p>`,
+    tip: `<p>apply 1 blind to all enemies when using a dice with <strong class="inline"><span>B</span></strong></p>`,
     pr: 100,
   };
   C28 = {
@@ -502,7 +505,7 @@ C0 = {
     effect: async (char) => {
       char.mhp += 8;
       heal(char, 8);
-      pl.seaEvents.unshift(SeaMonkey);
+      pl.seaEvents.unshift('SeaMonkey');
     },
     removeEffect: (char) => {
       char.mhp -= 8;
@@ -549,6 +552,49 @@ C0 = {
     },
     tip: `<p><strong class="inline"><span>D</span></strong>deals 1 extra dmg</p>`,
     pr: 80,
+  };
+  C34 = {
+    name: "Letter of Mark",
+    id: "C34",
+    mot: "More Options",
+    effect: async (char) => {
+      char.MoOp = true;
+    },
+    removeEffect: (char) => {
+      char.MoOp = false;
+    },
+    tip: `<p>Gain 1 extra option when choosing a new dieface</p>`,
+    pr: 80,
+  };
+  C35 = {
+    name: "Coconut",
+    id: "C35",
+    mot: "More Options",
+    effect: async (char) => {
+      char.mhp += 3;
+      heal(char, 3);
+    },
+    removeEffect: (char) => {
+      char.mhp -= 3;
+      heal(char, 0);
+    },
+    tip: `<p>Raise your max HP by 3</p>`,
+    pr: 80,
+  };
+  C36 = {
+    name: "Pineapple",
+    id: "C36",
+    mot: "Bananas - B = Pineapple",
+    effect: async (char) => {
+      char.mhp += 8;
+      heal(char, 8);
+    },
+    removeEffect: (char) => {
+      char.mhp -= 8;
+      heal(char, 0);
+    },
+    tip: `<p>Raise your max HP by 8</p>`,
+    pr: 120,
   };
   
   // pl.comTr = [C1, C3, C25];
@@ -824,8 +870,13 @@ C0 = {
 
   let endStageA = false
 
-  const endStage = ()=>{
-   return new Promise((resove)=>{
+  const endStage = async ()=>{
+   return new Promise( async (resove)=>{
+     await sleep(1000);
+     if(pl.stage == 2){
+       EndGame(true);
+       return;
+     }
        document.querySelector(".scr").childNodes.forEach((e) => {
         e.style = "transition: 500ms; opacity: 0; pointer-event: none;";
       });
@@ -854,34 +905,9 @@ C0 = {
   };
   
   const normalEnemys = [
-    [lostSailor],
-    [lostSailor],
-    [deckhand],
-    [deckhand],
-    [cooper],
-    [lostSailor, lostSailor],
-    [helmsman],
-    [lostSailor, deckhand],
-    [Gunner],
-    [cooper, deckhand],
-    [lostSailor, helmsman],
-    [lostSailor, lostSailor, deckhand],
-    [deckhand, helmsman],
-    [lostSailor, deckhand, deckhand],
-    [cooper, Gunner],
-    [helmsman, Gunner],
-    [lostSailor, lostSailor, helmsman],
-    [lostSailor, Gunner, helmsman],
-    [deckhand, Gunner, helmsman],
-    [cooper, Gunner, helmsman],
-    [cooper, Gunner, Gunner],
-    [cooper, helmsman, Gunner],
-    [cooper, helmsman, Gunner],
-    [cooper, helmsman, Gunner],
-    [cooper, helmsman, Gunner],
-    [cooper, helmsman, Gunner],
-    [cooper, helmsman, Gunner],
-    [cooper, helmsman, Gunner],
+    [[lostSailor], [lostSailor],[deckhand],[deckhand],[cooper],[lostSailor, lostSailor],[helmsman],[lostSailor, deckhand],[Gunner],[cooper, deckhand],[lostSailor, helmsman],[lostSailor, lostSailor, deckhand],[deckhand, helmsman],[lostSailor, deckhand, deckhand],[cooper, Gunner],[helmsman, Gunner],[lostSailor, lostSailor, helmsman],[lostSailor, Gunner, helmsman],[deckhand, Gunner, helmsman],[cooper, Gunner, helmsman],[cooper, Gunner, Gunner],[cooper, helmsman, Gunner],[cooper, helmsman, Gunner],[cooper, helmsman, Gunner]],
+    [[lostSailor, deckhand], [Gunner], [helmsman], [lostSailor, cooper], [deckhand, cooper], [deckhand, helmsman], [lostSailor, lostSailor, Gunner], [deckhand, cooper, helmsman], [Gunner, Gunner], [cooper, lostSailor, deckhand], [cooper, helmsman], [lostSailor, Gunner, helmsman], [cooper, cooper, cooper]],
+    [[lostSailor, deckhand], [Gunner], [helmsman], [lostSailor, cooper], [deckhand, cooper], [deckhand, helmsman], [lostSailor, lostSailor, Gunner], [deckhand, cooper, helmsman], [Gunner, Gunner], [cooper, lostSailor, deckhand], [cooper, helmsman], [lostSailor, Gunner, helmsman], [cooper, cooper, cooper]],
   ];
   
   const eliteEnemys = [[cook], [blacksmith], [blacksmith], [cook], [blacksmith], [blacksmith], [blacksmith], [blacksmith], [blacksmith]];
@@ -1043,10 +1069,11 @@ C0 = {
   
     //CLOSE INVENTORY
     if (upgr) {
+      let closeEye = getSVG('eyeclose'); 
       let retBtn = makeElmnt(
         "p",
         "btn return-btn",
-        `<img src="../images/closeEye.svg">`,
+        closeEye.outerHTML,
         body
       );
       let upgradeOpen = true;
@@ -1054,11 +1081,12 @@ C0 = {
         if (upgradeOpen == true) {
           closeInventory();
           upgradeOpen = false;
-          retBtn.innerHTML = `<img src="../images/openEye.svg">`;
+          let eyeopen = getSVG('eyeopen')
+          retBtn.innerHTML = eyeopen.outerHTML;
         } else {
           openInventory(true);
           upgradeOpen = true;
-          retBtn.innerHTML = `<img src="../images/closeEye.svg">`;
+          retBtn.innerHTML = closeEye.outerHTML;
         }
       });
     } else {
@@ -1223,19 +1251,15 @@ C0 = {
     if (target == pl) pl.hptrack.innerHTML = `<span>H</span>${pl.hp}/${pl.mhp}`;
   };
   
-  const addTreasure = (tr, char) => {
-    playSound('pickup')
+  const addTreasure = (tr, char, load) => {
+    if(!load) playSound('pickup')
     if(tr == undefined) tr = C0;
     tr = window[tr.id];
     //CREATE IMAGE
-    // let image = makeElmnt("img", `treasure ${tr.id}`, 0, char.trCon);
-    // image.src = `./images/treas/${tr.name}.svg`;
     let image = getSVG(tr.id);
     image.classList = `treasure ${tr.id}`
     char.trCon.append(image);
-    tr.effect(char);
-    let tipImg = getSVG(tr.id);
-    tr.tip = `<span>${tipImg.outerHTML}</span>${tr.tip}`
+    if(!load) tr.effect(char);
     //ADD TOOLTIP
     image.addEventListener("mouseenter", () => {
       addToolTip(0, 0, 0, tr.tip);
@@ -1277,7 +1301,7 @@ C0 = {
     let counter = document.querySelector(`.r${type}`);
     while (parseInt(counter.innerText) != pl.resourses[type]) {
       updateResources(type);
-      await sleep(80);
+      await sleep(50);
       if (parseInt(counter.innerText) == pl.resourses[type]) {
         break;
       }
@@ -1355,24 +1379,42 @@ C0 = {
     document.querySelector(".pl-icon").append(icon);
     pl.treasures = [];
     pl.noTreas = 0;
-    console.log(pl.SavedTreasures)
+    pl.comTr.forEach((t, i)=>{pl.comTr[i] = window[t]});
+    pl.uncomTr.forEach((t, i)=>{pl.uncomTr[i] = window[t]});
+    pl.rareTr.forEach((t, i)=>{pl.rareTr[i] = window[t]});
+    pl.shopTr.forEach((t, i)=>{pl.shopTr[i] = window[t]});
+    pl.gemArr.forEach((t, i)=>{pl.gemArr[i] = window[t]});
+    pl.mayanArr.forEach((t, i)=>{pl.mayanArr[i] = window[t]});
     if(pl.SavedTreasures) pl.SavedTreasures.forEach(t=>{
       t = window[t];
-      addTreasure(t, pl);
+      addTreasure(t, pl, true);
     });
+    console.log(pl.comTr)
+    console.log(pl.uncomTr)
+
+    pl.resourses.forEach((r, i)=>{
+      document.querySelector(`.r${i}`).innerHTML = r;
+    })
+
+    for(i = 0; i < 37; i++){
+      let obj = window[`C${i}`];
+      let tip = getSVG(`C${i}`);
+      obj.tip = `<span>${tip.outerHTML}</span>${obj.tip}`;
+    }
   
     if(pl.stage > 0){
       allenemies.forEach(e=>{
-        e.hp += 5 * pl.stage;
+        e.hp += 8 * pl.stage;
         e.dieArr.forEach(d=>{
           d.faceVal.forEach(v=>{
             for(i = 0; i < pl.stage; i++)
-            if(v.length < 6) v.push(v[0]);
+            if(v.length < 6 && v[0] != v[0].toLowerCase()) v.push(v[0]);
           })
         })
       })
     }
   }
+  Load();
   
   
   const Save = ()=>{
@@ -1380,6 +1422,12 @@ C0 = {
     pl.treasures.forEach((t)=>{
       pl.SavedTreasures.push(t.id);
     })
+    pl.comTr.forEach((t, i)=>{pl.comTr[i] = t.id});
+    pl.uncomTr.forEach((t, i)=>{pl.uncomTr[i] = t.id});
+    pl.rareTr.forEach((t, i)=>{pl.rareTr[i] = t.id});
+    pl.shopTr.forEach((t, i)=>{pl.shopTr[i] = t.id});
+    pl.gemArr.forEach((t, i)=>{pl.gemArr[i] = t.id});
+    pl.mayanArr.forEach((t, i)=>{pl.mayanArr[i] = window[t]});
     pl.dieArr.forEach(d=>{
       d.owner = {};
       d.die = '';
@@ -1418,12 +1466,12 @@ C0 = {
       floorLvl: 0,
       stage: 0,
       score: 0,
-      comTr: [C1, C3, C25, C33],
-      uncomTr: [C4, C7, C8, C2, C18, C29],
-      rareTr: [C27, C6, C32],
-      shopTr: [C19, C20, C21, C23, C8],
-      gemArr: [C12, C11, C16, C14, C15],
-      mayanArr: [C13, C26, C28, C22],
+      comTr: ["C1", "C3", "C25", "C33", "C34", "C35"],
+      uncomTr: ["C4", "C7", "C8", "C2", "C18", "C29"],
+      rareTr: ["C27", "C6", "C32", "C36"],
+      shopTr: ["C19", "C20", "C21", "C23", "C8"],
+      gemArr: ["C12", "C11", "C16", "C14", "C15"],
+      mayanArr: ["C13", "C26", "C28", "C22"],
       seed: [],
       CostumsSeed: '',
       landEvents: ['Market', 'MonkeyJungle', 'shadyMerchant', 'intoTheFog', 'piratecave', 'Butcher', 'DeadPirate', 'CursedHammer'],
@@ -1431,31 +1479,6 @@ C0 = {
     }
   }
 
-  
-
-// window.localStorage.setItem('player', JSON.stringify(pl));
-// pl = JSON.parse(window.localStorage.getItem('player'));
-// pl.trCon = document.querySelector(".treasures"),
-// console.log(pl)
-
-
-// makeElmnt(
-//   "div",
-//   "",
-//   `<p>Hanniepannie</p><p>${pl.name}</p>`,
-//   document.querySelector(".pl-stats")
-// );
-// let plSt = makeElmnt("div", "", "", document.querySelector(".pl-stats"));
-// pl.hptrack = makeElmnt(
-//   "div",
-//   "hp-track",
-//   `<span>H</span>${pl.hp}/${pl.mhp}`,
-//   plSt
-// );
-// // pl.crewtrack = makeElmnt("div", "crew-track", `<span>c</span>${pl.crew}`, plSt);
-// document.querySelector(
-//   ".pl-icon"
-// ).innerHTML = `<img src="./images/avatar/${pl.name}.svg">`;
 
 let tooltip = makeElmnt("div", "tooltip", "", body);
 const dragTooltip = (e) => {
@@ -1482,12 +1505,12 @@ const tips = {
   F: `Deals <strong class="dmg">2</strong> dmg and has 10% chance to stun a enemy for every symbol on this face`,
   G: `Deals <strong class="dmg">4</strong> dmg for every symbol on this face and turns it into a <strong class="inline"><span>J</span></strong>`,
   H: `Heal 1 hp for every symbol on this face`,
-  I: `Grants 4 shield and applies 1 weak for every symbol on this face`,
+  I: `Grants 3 shield and applies 1 weak for every symbol on this face`,
   J: `Turns every symbol on this face into a <strong class="inline"><span>G</span></strong>`,
   K: `Deals <strong class="dmg">1</strong> dmg and applies 1 weak for very symbol on this face`,
   P: `Apply 1 poison for every symbol on this face`,
   Q: `???`,
-  R: `Deals <strong class="dmg">1</strong> piercing dmg for every symbol on this face`,
+  R: `Deals <strong class="dmg">2</strong> piercing dmg for every symbol on this face`,
   S: `Grants 2 shield for every symbol on this face`,
   T: `Deals dmg equal to your shield and lose 2 shield for every symbol on this face`,
   X: `Grants 1 rage for every symbol on this face`,
@@ -1657,7 +1680,6 @@ for (i = 0; i < 8; i++) {
   makeElmnt("div", "cipher", Cipher[seed[i].root], seedDis);
   seedCheck.push(Cipher[seed[i].root]);
 }
-console.log(seedCheck.join(''));
 
 const removeFromArray = async (arr, obj) => {
   for (let i = arr.length - 1; i >= 0; i--) {
@@ -1720,6 +1742,7 @@ async function rollDice(die) {
   const newResult = async (die) => {
     return new Promise(async(resolve, reject)=>{
       let val = (await random(seed[1], 5)) + 1;
+      console.log(die);
       if(die.obj.faceVal[val -1] != 'x') resolve(val);
       else val = await newResult();
       resolve(val)
@@ -1773,15 +1796,15 @@ let roomType = [
   ["?", "A", 'A'],
   ["?", "A", "!", "S"],
   ["A", "M", "?"],
-  ["A", "?", "R", "T"],
+  ["A", "A", "R", "T"],
   ["!", "F", "M", 'A'],
   ["R", "?", "C"],
-  ["A", "A", "S", "?", "?"],
+  ["A", "A", "S", "?", "?", "!"],
   ["A", "C", "M", "R"],
   ["T", "C", "T", "C"],
   ["A", 'A', "R", "?"],
   ["A", "C", "?", "S", "S"],
-  ["A", "C", "!", "?", "M"],
+  ["A", "A", "C", "!", "?", "M"],
   ["R"],
 ];
 const waveArr = [];
@@ -2131,6 +2154,9 @@ const nextRoom = async () => {
             t.firstChild.style.opacity = "0.5";
         }
       });
+      document.querySelectorAll('.choose-room').forEach(r=>{
+        r.classList.remove('choose-room');
+      })
       closeMap();
       currentRoom = r;
       await enterRoom(r.type);
@@ -2144,7 +2170,7 @@ const nextRoom = async () => {
     });
   });
   if (document.querySelector(".C24")) {
-    waveArr[pl.floorLvl - 1].forEach(async (f, i) => {
+    waveArr[pl.floorLvl - 1 - (pl.stage * 16)].forEach(async (f, i) => {
       await sleep(i * 250);
       if (f.dot && !f.check) {
         f.check = true;
@@ -2227,7 +2253,7 @@ const enterRoom = async (type) => {
           }, 1000)
           return;
         }
-        if (pl.floorLvl == 1 || pl.floorLvl == 17) {
+        if (pl.floorLvl == 1 || pl.floorLvl == 17 || pl.floorLvl == 33) {
           for (i = 0; i < 7; i++) {
             if (firstWave[i].type != 0) {
               roomOptions.push(firstWave[i]);
@@ -2240,15 +2266,15 @@ const enterRoom = async (type) => {
         inRoom = false;
         setTimeout(() => {
           document
-            .querySelector(`#floor${pl.floorLvl}`)
+            .querySelector(`#floor${pl.floorLvl - 1}`)
             .scrollIntoView({ behavior: "smooth", block: "center" });
         }, 600);
       });
       let r = await random(seed[3], 2);
       if (type == "A") {
-        enterCombat(room, button, normalEnemys[r], "A");
-        removeFromArray(normalEnemys, normalEnemys[r]);
-        removeFromArray(normalEnemys, normalEnemys[0]);
+        enterCombat(room, button, normalEnemys[pl.stage][r], "A");
+        removeFromArray(normalEnemys[pl.stage], normalEnemys[pl.stage][r]);
+        removeFromArray(normalEnemys[pl.stage], normalEnemys[pl.stage][0]);
       } else if (type == "C") {
         enterCombat(room, button, eliteEnemys[r], "C");
         removeFromArray(eliteEnemys, eliteEnemys[r]);
@@ -2261,8 +2287,8 @@ const enterRoom = async (type) => {
         else if (ranEv == 5) enterUnkownLand(room, button, 'Tavern');
         else if (ranEv == 6) enterUnkownLand(room, button, 'Bonfire');
         else {
-          enterCombat(room, button, normalEnemys[r], "A");
-          removeFromArray(normalEnemys, normalEnemys[r]);
+          enterCombat(room, button, normalEnemys[pl.stage][r], "A");
+          removeFromArray(normalEnemys[pl.stage], normalEnemys[pl.stage][r]);
         }
       } else if (type == "!") enterUnkownLand(room, button, "!");
       else if (type == "T") enterUnkownLand(room, button, 'treasureChest');
@@ -2635,7 +2661,7 @@ const enterCombat = async (room, btn, enArr, type) => {
   button = btn;
   win = false;
   pl.dp = 0;
-  changeBackground("test");
+  changeBackground("combat-bg");
   btn.style = "opacity: 0; pointer-events: none;";
   roomA = room;
   room.style.pointerEvents = "none";
@@ -2761,9 +2787,12 @@ const playBan = async (str) => {
 };
 
 const changeBackground = async (bg) => {
-  BG.src = `./images/bg/${bg}.svg`;
-  if (bg == "test") BG.style.filter = "saturate(1.3)";
-  else BG.style = "";
+  document.querySelector('.bg').remove()
+  let svg = getSVG(bg);
+  svg.classList.add('bg');
+  body.append(svg);
+  if (bg == "combat-bg") svg.style.filter = "saturate(1.3)";
+  else svg.style = "";
 };
 
 const createChar = (char, container) => {
@@ -2823,6 +2852,9 @@ const createChar = (char, container) => {
     nDie.addEventListener("mouseenter", () => {
       addToolTip(nDie.firstChild.innerHTML, die);
     });
+    nDie.addEventListener("click", () => {
+      addToolTip(nDie.firstChild.innerHTML, die);
+    });
     nDie.addEventListener("mouseleave", removeToolTip);
     rot += 20;
     let h = rot;
@@ -2841,13 +2873,20 @@ const useDie = async (owner, die, target, val) => {
     die.obj.used = true;
     while (inUse == true) await sleep(20);
     inUse = true;
+    if (owner.SmB && val[0] == "B"){
+      charArr.forEach(c=>{
+        if(c.type != owner.container.type){
+          addStatus("b", 1, c.obj);
+        } 
+      })
+    };
     for (i = 0; i < val.length; i++) {
       if (win == false) {
         playSound(val[i]);
         //FIST
         if (val[i] == "F") {
           attack(owner, target);
-          hit(target, 2, val[i], owner);
+          hit(target, 2, val[i], owner, 'punch');
           let times = 10;
           if (owner.BK) times = 5;
           let suc = Math.floor(Math.random() * times);
@@ -2864,7 +2903,7 @@ const useDie = async (owner, die, target, val) => {
           //KICK
         } else if(val[i] == "K"){
           attack(owner, target);
-          hit(target, 1, val[i], owner);
+          hit(target, 1, val[i], owner, 'punch');
           addStatus('w', 1, target);
           
           //DAGGER
@@ -2872,13 +2911,13 @@ const useDie = async (owner, die, target, val) => {
           attack(owner, target);
           if(!owner.wetstone) owner.wetstone = 0;
           owner.dagger++;
-          hit(target, owner.dagger + owner.wetstone, val[i], owner);
+          hit(target, owner.dagger + owner.wetstone, val[i], owner, 'slice');
           
           //HOOK
         } else if(val[i] == "E"){
           attack(owner, target);
           if(target.dp > 0) Shield(owner, 1);
-          hit(target, 2, val[i], owner);
+          hit(target, 2, val[i], owner, 'slice');
           
           //SHIELD
         } else if (val[i] == "S") {
@@ -2886,34 +2925,33 @@ const useDie = async (owner, die, target, val) => {
           
           //HEAVY SHIELD
         } else if (val[i] == "I") {
-          Shield(target, 4);
+          Shield(target, 3);
           addStatus("w", 1, target);
           
           //THROW SHIELD
         } else if (val[i] == "T") {
           attack(owner, target);
-          hit(target, owner.dp, val[i], owner);
-          Shield(target, -2);
+          hit(target, owner.dp, val[i], owner, 'punch');
+          Shield(owner, -2);
           
           //CUTLASS
         } else if (val[i] == "C") {
           attack(owner, target);
-          hit(target, 3, val[i], owner);
+          hit(target, 3, val[i], owner, 'slice');
 
           //RAPIER
         } else if (val[i] == "R") {
           attack(owner, target);
-          hit(target, 1, val[i], owner);
+          hit(target, 2, val[i], owner, 'slice');
           
           //BOMB
         } else if (val[i] == "B") {
           charArr.forEach((c) => {
             if (c.type != owner.container.type) {
-              if (owner.SmB) addStatus("b", 1, c.obj);
               attack(owner, c.obj);
               if (c.obj == target && owner.AoC)
-              hit(c.obj, 2 + owner.AoC, val[i], owner);
-              else hit(c.obj, 2, val[i], owner);
+              hit(c.obj, 2 + owner.AoC, val[i], owner, 'punch');
+              else hit(c.obj, 2, val[i], owner, 'punch');
             }
           });
           
@@ -3053,14 +3091,14 @@ const removeStatus = (icon, owner) => {
   });
 };
 
-const hit = async (target, val, icon, owner) => {
+const hit = async (target, val, icon, owner, ani) => {
   if (owner) {
     if (owner.b > 0) {
       let miss = await random(seed[1], 1);
       if (owner.topaz) miss = await random(seed[1], 3);
       if (miss > 0) val = -1;
     }
-    if (target.ss && val != "P") hit(owner, 1);
+    if (target.ss && val != "P") hit(owner, 1, undefined, undefined, 'slice');
   }
   if (owner == pl && pl.monkey && val > 0) {
     addResource(0, 1);
@@ -3073,7 +3111,8 @@ const hit = async (target, val, icon, owner) => {
   //DMG COUNTER
   let dam = makeElmnt("p", "dam", "", target.container);
   //HIT ICON ON CONTAINER
-  makeElmnt("span", "", icon, target.efCo);
+  let anima = makeElmnt("div", '', `<div class="${ani}"></div>`, target.efCo);
+  anima.style.transform = `rotate(${-45 + Math.floor(Math.random() * 90)}deg)`;
   //HIT SHIELD IF REQUIRED
   if (target.dp < val && target.dp > 0) playSound("shieldbreak");
   while (target.dp > 0 && val > 0 && icon != "R" && icon != "P") {
@@ -3174,7 +3213,7 @@ const startTurn = async () => {
   //RESET CHARACTERS
   charArr.forEach(async (c) => {
     //ENEMIES
-    if (c.type == "enemy" && firstTurn == true && pl.Ame) hit(c.obj, Math.round(c.obj.mhp / 4), "F")
+    if (c.type == "enemy" && firstTurn == true && pl.Ame) hit(c.obj, Math.round(c.obj.mhp / 4), undefined, undefined, 'slice')
     if (c.type == "enemy" && firstTurn == false) {
       EndCharTurn(c.obj);
     }
@@ -3212,7 +3251,10 @@ const endTurn = async () => {
   while (inUse) await sleep(20);
   if (pl.Diamond && pl.reroll > 1) {
     charArr.forEach((c) => {
-      if (c.type == "enemy") hit(c.obj, pl.reroll - 1, "F");
+      if (c.type == "enemy"){
+        playSound('C')
+        hit(c.obj, pl.reroll - 1, undefined, undefined, 'slice');
+      };
     });
   }
   if (pl.Sapphire) Shield(pl, pl.reroll - 1);
@@ -3264,7 +3306,7 @@ const EndCharTurn = (char) => {
   //POISON
   if (char.p > 0) {
     // awP = 1000;
-    hit(char, char.p, "P");
+    hit(char, char.p, 'P', undefined, 'punch');
     if (pl.Emerald) addStatus("p", -3, char);
     else addStatus("p", -1, char);
     playSound("poison");
@@ -3288,7 +3330,7 @@ const openEndTurn = () => {
 };
 
 const healing = () => {
-  heal(pl, 5);
+  heal(pl, 3);
 };
 const crew = () => {
   console.log("crew");
@@ -3382,91 +3424,53 @@ const addDieface = async () => {
   //CREATE BANNER
   makeElmnt("h1", "", "Choose a new Dieface", cont);
   //CREATE VIEW BUTTON
-  let retBtn = makeElmnt(
-    "p",
-    "btn return-btn",
-    `<img src="../images/closeEye.svg">`,
-    body
-  );
+  let closeEye = getSVG('eyeclose');
+  let retBtn = makeElmnt("p", "btn return-btn", closeEye.outerHTML, body);
   let addDieOpen = true;
   retBtn.addEventListener("click", () => {
     playSound("paper");
     if (addDieOpen == true) {
-      retBtn.innerHTML = `<img src="../images/openEye.svg">`;
+      let openEye = getSVG('eyeopen')
+      retBtn.innerHTML = openEye.outerHTML;
       cont.style.opacity = "0";
       cont.style.pointerEvents = "none";
       addDieOpen = false;
     } else {
-      retBtn.innerHTML = `<img src="../images/closeEye.svg">`;
+      retBtn.innerHTML = closeEye.outerHTML;
       cont.style.opacity = "1";
       cont.style.pointerEvents = "";
       addDieOpen = true;
     }
   });
   //CREATE NEW DIEFACES
-  let faceA = await makeNewDieFace(Math.ceil((3 / 15) * pl.floorLvl), 0, 0, true);
-  faceA.style.right = `70vw`;
-  cont.append(faceA);
-  let faceB = await makeNewDieFace(
-    Math.ceil((3 / 15) * pl.floorLvl),
-    faceA.class,
-    0,
-    true
-  );
-  faceB.style.right = `50vw`;
-  cont.append(faceB);
-  let faceC = await makeNewDieFace(
-    Math.ceil((3 / 15) * pl.floorLvl),
-    faceA.class,
-    faceB.class,
-    true
-  );
-  faceC.style.right = `30vw`;
-  cont.append(faceC);
+  let faceA = await makeNewDieFace(Math.ceil((1 / 16) * pl.floorLvl), 0, 0, true);
+  let faceB = await makeNewDieFace(Math.ceil((1 / 16) * pl.floorLvl), faceA.class, 0, true, true);
+  let faceD = makeElmnt('div');
+  if(pl.MoOp) faceD = await makeNewDieFace(Math.ceil((1 / 16) * pl.floorLvl), faceA.class, faceB.class, true, true);
+  let faceC = await makeNewDieFace(Math.ceil((1 / 16) * pl.floorLvl), faceA.class, faceB.class, true);
+  if(pl.MoOp) cont.append(faceA, faceB, faceD, faceC);
+  else cont.append(faceA, faceB, faceC);
 };
 
 //RETURN NEW DIEFACE
-const makeNewDieFace = async (val, preA, preB, add) => {
+const makeNewDieFace = async (val, preA, preB, add, plus) => {
   return new Promise(async (resolve, reject) => {
     //SET VALUE FOR EVERY SYMBOL
-    valArr = ["F", "S", "D", "R", "C", 'K', "G", "B", "E","T", "I", "X"];
+    valArr = ["F", "S", "D", "R", "C", 'K', "G", "B", "E","T", "I", "X","F", "S", "D", "R", "C", 'K', "G", "B", "E","T", "I", "X"];
     await shuffle(valArr, seed[6]);
     //CHECK IF VALUE HAS BEEN USED
     valArr.forEach((v) => {
         if (v == preA) removeFromArray(valArr, v);
         if (v == preB) removeFromArray(valArr, v);
     });
-    //GET RANDOM SYMBOL LEVEL
-    // let opt = val;
-    // if (opt > 3) opt = 3;
-    // opt = await random(seed[6], opt);
-    //IF SYMBOL ALLREADY EXISTS
-    // if (valArr[opt][0] == undefined) {
-    //   for (v = opt; v >= 0; v--) {
-    //     if (valArr[v].length > 0) {
-    //       opt = v;
-    //       break;
-    //     }
-    //     if (v == 0) {
-    //       for (va = 0; v < valArr.length; va++) {
-    //         if (valArr[va].length > 0) {
-    //           opt = va;
-    //           break;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-    //GET RANDOM SYMBOL INSIDE SYMBOL LEVEL
-    // let optB = await random(seed[6], valArr[opt].length - 1);
     let newDieFaceArrTemp = [];
     //SET CHOZEN SYMBOL
     let nV = valArr[0];
     let mayanRew = ["H", "P"];
     if (combatType == "M") nV = mayanRew[await random(seed[6], 1)];
     //IF X SET VALUE TO 1, ELSE TIMES VALUE
-    console.log(val);
-    let faceLvl = val  + await random(seed[6], 1);
+    let faceLvl = val
+    if(plus) faceLvl += 1;
     if (faceLvl > 6) faceLvl = 6;
     for (v = 0; v < faceLvl; v++) newDieFaceArrTemp.push(nV);
     //DRAW NEW DIEFACE
@@ -3498,7 +3502,6 @@ const makeNewDieFace = async (val, preA, preB, add) => {
         }, 800);
       });
     }
-    face.style.top = "50vh";
     resolve(face);
   });
 };
@@ -3626,7 +3629,7 @@ const createLoot = async (val) => {
     ];
 
     //SET TOTAL LOOT = TO VALUE
-    let value = Math.ceil(30 + val * 1.2);
+    let value = 30;
     if (combatType == "M") {
       let flV = await random(seed[7], 5);
       tempLoot[5][1] = Math.floor((value / 12) * flV + 5);
@@ -3641,7 +3644,7 @@ const createLoot = async (val) => {
       tempLoot[4][1] = await random(seed[7], 7);
     }
     value -= tempLoot[4][1];
-    tempLoot[0][1] = value;
+    tempLoot[0][1] = Math.ceil(value / 2);
 
     loot = tempLoot;
     resolve();
@@ -3724,7 +3727,7 @@ const booty = async () => {
   else LO2.num = (await random(seed[7], 1 - LO1.num)) + LO1.num + 1;
   if (!pl.AoH) pl.AoH = 0;
   let opArr = [
-    `Heal ${5 + pl.AoH} HP`,
+    `Heal ${3 + pl.AoH} HP`,
     "Upgrade a Diceface",
     "Add a new Diceface",
   ];
@@ -3756,7 +3759,9 @@ const booty = async () => {
 
 const EndGame = async (win) => {
   let deathscreen = makeElmnt("section", "death-screen", "", body);
-  if (pl.container) pl.container.classList.add("death");
+  if(win) deathscreen.classList.add('death-win');
+  else deathscreen.classList.add('death-loss');
+  if (pl.container && pl.hp <= 0) pl.container.classList.add("death");
   let score = makeElmnt("ul", "score", "", deathscreen);
   await sleep(2500);
   let sA = makeElmnt(
@@ -3828,19 +3833,16 @@ const EndGame = async (win) => {
 };
 
 const startTimer = async (elm, val) => {
-  let delay = 2000 / val;
+  let delay = Math.floor(2000 / val);
   while (parseInt(elm.innerText) != val) {
-    elm.innerText = parseInt(elm.innerText) + 1;
-    await sleep(delay);
+      elm.innerText = parseInt(elm.innerText) + 1;
+      await sleep(delay);
   }
 };
 
-// setTimeout(() => {
-//   EndGame(false);
-// }, 2000);
-
 //THE ROYAL NAVY EVENT
 royalNavy = {
+    id: 'beta',
     title: "The Royal Navy",
     text: () => {
       return `While having a drink with your crew in the local tavern you notice a group of pirates getting arrested by the royal navy.<br><br>You spot one of the pirates that managed to get away walking towards you.`;
@@ -3902,6 +3904,7 @@ royalNavy = {
     ],
   };
   royalNavyB = {
+    id: 'beta',
     title: "The Royal Navy",
     text: () => {
       return `You catch the runaway pirate and you hand him to the royal marines.<br>For your reward they hand you 50 doubloons.<br><br>One of the guards looks at you suspiciously, you dicide to take your leave and go.`;
@@ -3918,6 +3921,7 @@ royalNavy = {
     ],
   };
   royalNavyC = {
+    id: 'beta',
     title: "The Royal Navy",
     text: () => {
       return `The runaway pirate takes a seat at your table and joins your crew to avoid the royal navy.<br><br>You gained a new crewmember.`;
@@ -3934,6 +3938,7 @@ royalNavy = {
     ],
   };
   royalNavyAA = {
+    id: 'beta',
     title: "The Royal Navy",
     text: () => {
       return `After defeating a single royal marine the others drop there swords and start running away.<br>The rescued group of pirates want to join your crew.`;
@@ -3962,6 +3967,7 @@ royalNavy = {
   //TREASURE CHEST
   treasureChest = {
     title: "Treasure Chest",
+    id: 'E2',
     text: () => {
       return `You find a burried Treasure Chest while exploring.`;
     },
@@ -3990,7 +3996,7 @@ royalNavy = {
           //ADD PAPERTEXURE
           makeElmnt("div", "r-bg", "", rewardCon);
           //CEATE DOUBLOONS
-          let val = (await random(seed[7], 9)) * (await random(seed[7], 9)) + 1;
+          let val = (await random(seed[7], 9)) + (await random(seed[7], 9)) + 10;
           let lootCon = makeElmnt(
             "li",
             "loot",
@@ -4019,7 +4025,7 @@ royalNavy = {
               });
           } else {
             for (i = 0; i < amount; i++) {
-                let trarr = [pl.comTr, pl.comTr, pl.comTr, pl.comTr, pl.uncomTr, pl.uncomTr, pl.uncomTr, pl.rareTr, pl.rareTr, pl.gemArr];
+                let trarr = [pl.comTr, pl.comTr, pl.comTr, pl.rareTr, pl.rareTr, pl.gemArr];
                 trarr.forEach(a=>{
                   if(a.length == 0){
                     removeFromArray(trarr, a);
@@ -4064,6 +4070,7 @@ royalNavy = {
   //A SHADY MERCHANT
   shadyMerchant = {
     title: "A Shady Merchant",
+    id: 'E1',
     text: () => {
       return `You come across a shady merchant. He wants to sell you some of his wear.<br><br>"Higher price, higher quality" the merchant says.`;
     },
@@ -4137,6 +4144,7 @@ royalNavy = {
   };
   shadyMerchantA = {
     title: "A Shady Merchant",
+    id: 'E1',
     text: () => {
       return `"Hehehe, no refunds" says the merchant as he quickly runs away.<br><br>You look at purchased goods, but they look fine.<br>You dicide not to look into it and leave.`;
     },
@@ -4155,6 +4163,7 @@ royalNavy = {
   //IN THE MIST
   intoTheFog = {
     title: "Into the fog",
+    id: 'E5',
     text: () => {
       return `While exploring the jungle you notice a thick fog creeping up on you.<br><br>You can barely see through the fog, but it sounds like someone is whispering to you.<br>You can't understand what they say.<br><br>You can still see the beach behind you.`;
     },
@@ -4179,6 +4188,7 @@ royalNavy = {
   };
   intoTheFogA = {
     title: "Into the fog",
+    id: 'E5',
     text: () => {
       return `It's getting harder and harder to see where you're going and the whispering voices are getting louder.<br><br>The road splits two ways.<br>To your left you see something glistening in the distance, what could it be?<br>Suddenly a path decorated with strange flowers opens up on your right.`;
     },
@@ -4202,6 +4212,7 @@ royalNavy = {
     ],
   };
   intoTheFogB = {
+    id: 'E5',
     title: "Into the fog",
     text: () => {
       intoTheFogB.gem = pl.gemArr[0];
@@ -4223,6 +4234,7 @@ royalNavy = {
       },
       {
         text: () => {
+          if(pl.treasures.length == 0) return `Replace with a treasure`
           let a = Math.floor((pl.treasures.length / 10) * seed[5].arr[0]);
           intoTheFogB.options[1].treas = pl.treasures[a];
           return `Replace with a treasure [ Lose ${intoTheFogB.options[1].treas.name} ]`;
@@ -4232,9 +4244,14 @@ royalNavy = {
           addTreasure(intoTheFogB.gem, pl);
           enterEvent(intoTheFogBB, button);
         },
+        req: () => {
+          if (pl.treasures.length > 0) return true;
+          else return false;
+        },
       },
       {
         text: () => {
+          if(pl.treasures.length <= 1) return `Replace with a treasure`
           let a = Math.floor(((pl.treasures.length - 1) / 10) * seed[5].arr[1]);
           if (pl.treasures[a] == intoTheFogB.options[1].treas) a++;
           intoTheFogB.options[2].treas = pl.treasures[a];
@@ -4245,10 +4262,15 @@ royalNavy = {
           addTreasure(intoTheFogB.gem, pl);
           enterEvent(intoTheFogBB, button);
         },
+        req: () => {
+          if (pl.treasures.length >= 2) return true;
+          else return false;
+        },
       },
     ],
   };
   intoTheFogBA = {
+    id: 'E5',
     title: "Into the fog",
     text: () => {
       addBrandmark("w");
@@ -4266,6 +4288,7 @@ royalNavy = {
     ],
   };
   intoTheFogBB = {
+    id: 'E5',
     title: "Into the fog",
     text: () => {
       return `You quickly switch out the gem for the treasure and the voices stop wispering.<br><br>It stays quiet and the fog lifts.`;
@@ -4282,6 +4305,7 @@ royalNavy = {
     ],
   };
   intoTheFogC = {
+    id: 'E5',
     title: "Into the fog",
     text: () => {
       return `You follow the path of strange flowers to a waterfall.<br>When you reached the waterfall at the base of a pond, a mist rose from the waterfall creating a whistling sound.<br><br>You begin to feel calm and peaceful.`;
@@ -4308,6 +4332,7 @@ royalNavy = {
     ],
   };
   intoTheFogCA = {
+    id: 'E5',
     title: "Into the fog",
     text: () => {
       return `You drink the water from the pond and it heals all your cuts and bruises.<br><br>The whispering stops and you are blinded by the fog.<br><br>As soon as the fog lifts it appears that you are back on the beach.`;
@@ -4324,6 +4349,7 @@ royalNavy = {
     ],
   };
   intoTheFogCB = {
+    id: 'E5',
     title: "Into the fog",
     text: () => {
       return `You fill a bottle with water from the pond and the ground starts shaking under your feet. <br>You get blinded by the mist and the whispering fades away.<br><br>After a few moments the mist lifts and you find yourself back on the beach.`;
@@ -4344,6 +4370,7 @@ royalNavy = {
   let diveSuc = 4;
   Dive = {
     title: "Dive",
+    id: 'E4',
     text: () => {
       return `You found a shipwreck.<br><br>You should be able to dive down and see what you can find.`;
     },
@@ -4368,6 +4395,7 @@ royalNavy = {
   };
   DiveA = {
     title: "Dive",
+    id: 'E4',
     text: () => {
       return `There's barely anything left of the ship. What could have happend to it?<br><br>There is a chest underneath a pile of woodenbars. A good hard pull should get it out of there.`;
     },
@@ -4396,6 +4424,7 @@ royalNavy = {
   };
   DiveB = {
     title: "Dive",
+    id: 'E4',
     text: () => {
       diveSuc--;
       return `It's starting to get loose but not quite yet.<br><br>Your getting out of breath and start to feel dizzy.`;
@@ -4428,6 +4457,7 @@ royalNavy = {
   };
   DiveC = {
     title: "Dive",
+    id: 'E4',
     text: () => {
       return `Succes! <br><br>Looks like the chest is empty.<br>At least its pretty.`;
     },
@@ -4445,6 +4475,7 @@ royalNavy = {
   
   //UNDERWATER CHEST
   UnderwaterChest = {
+    id: 'beta',
     title: "Underwater Chest",
     text: () => {
       return `The water is shallow and you find a chest underwater.<br>Could be something shiny...`;
@@ -4470,6 +4501,7 @@ royalNavy = {
     ],
   };
   UnderwaterChestA = {
+    id: 'beta',
     title: "Underwater Chest",
     text: () => {
       return `You found a ships wheel.<br>It looks damaged and a green glow emerges from the crackes.`;
@@ -4489,6 +4521,7 @@ royalNavy = {
   //MESSAGE
   message = {
     title: "Message in a Bottle",
+    id: 'E6',
     text: () => {
       return `You found a bottle on the beach. There seams to be a letter inside.<br>The letter tells about a burried treasure not far from here.`;
     },
@@ -4506,9 +4539,7 @@ royalNavy = {
           }
           spot.type = "T";
           await sleep(600);
-          document
-            .querySelector(`#floor${spot.wave}`)
-            .scrollIntoView({ behavior: "smooth", block: "center" });
+          document.querySelector(`#floor13`).scrollIntoView({ behavior: "smooth", block: "center" });
           await sleep(800);
           spot.dot.innerHTML = `<div class="burried"><strong>burried treasure</strong>X</div>`;
           playSound("scr");
@@ -4529,6 +4560,7 @@ royalNavy = {
   //PIRATECAVE
   piratecave = {
     title: "Piratecave",
+    id: 'E7',
     text: () => {
       return `You enter a cave.<br>Inside you find a couple of sleeping rogue pirates.<br><br>Their treasure is right next to them.`;
     },
@@ -4577,6 +4609,7 @@ royalNavy = {
     ],
   };
   piratecaveA = {
+    id: 'E7',
     title: "Piratecave",
     text: () => {
       return `You accidentely kick against a rock and it makes a small but echoing sound.<br>One of the pirates turns in his sleep.<br><br>Their still sleeping.`;
@@ -4635,6 +4668,7 @@ royalNavy = {
     ],
   };
   piratecaveB = {
+    id: 'E7',
     title: "Piratecave",
     text: () => {
       piratecave.tr = pl.comTr[0];
@@ -4667,6 +4701,7 @@ royalNavy = {
   
   //GAMBLE
   Gamble = {
+    id: 'beta',
     title: "Gamble",
     text: () => {
       Gamble.gem = pl.gemArr[0];
@@ -4698,6 +4733,7 @@ royalNavy = {
     ],
   };
   GambleA = {
+    id: 'beta',
     title: "Gamble",
     text: () => {
       return `You accepted and the captain starts dealing the cards.<br><hr>You got 2 cards: [ J ] [ Q ]<br>Cards on the table: [ 4 ] [ A ] [ 8 ] [ J ] [ 5 ]<br><hr>The captain starts laughing and trows his cards on the table revealing: [ K ] [ K ]`;
@@ -4733,6 +4769,7 @@ royalNavy = {
     ],
   };
   GambleB = {
+    id: 'beta',
     title: "Gamble",
     text: () => {
       return `The captains smile drops from his face and asked you kindly to leave.`;
@@ -4752,6 +4789,7 @@ royalNavy = {
   //TAVERN
   Tavern = {
     title: "Tavern",
+    id: 'E8',
     text: () => {
       return `You come across the local tavern.`;
     },
@@ -4804,7 +4842,7 @@ royalNavy = {
       let d = await makeNewDieFace(pr);
       d.sold = false;
       d.classList.remove("newdieface");
-      d.pr = pr * 15 + (await random(seed[7], pr * 2));
+      d.pr = pr * 35 + (await random(seed[7], pr * 2));
       d.price = makeElmnt("p", "price", `<span>h</span>${d.pr}`, d);
       buyTab.append(d);
     }
@@ -4816,7 +4854,7 @@ royalNavy = {
       treas.sold = false;
       treas.tr = sTr[i][0];
       removeFromArray(sTr[i], treas.tr);
-      treas.pr = (await random(seed[7], 9)) + i * 20 + 60;
+      treas.pr = (await random(seed[7], 9) * 2) + (i + 1) * 35 + 90;
       let img = getSVG(treas.tr.id)
       img.classList.add('tr-img');
       treas.append(img)
@@ -4919,22 +4957,13 @@ royalNavy = {
     });
   };
   const getSell = (val) => {
-    let arr = [
-      ["F", "S"],
-      ["R", "C"],
-      ["G", "B", "P"],
-      ["H", "T", "I"],
-    ];
-    let v = 5;
-    for (i = 0; i < 4; i++) {
-      if (arr[i].includes(val[0])) v += (i + 1) * 7 * val.length;
-    }
-    return v;
+    return 4 + 6 * val.length;
   };
   
   //BONFIRE
   Bonfire = {
     title: "Bonfire",
+    id: 'E3',
     text: () => {
       return `There's a bonfire on the beach.<br>What to do?`;
     },
@@ -4968,6 +4997,7 @@ royalNavy = {
   };
   BonfireHeal = {
     title: "Bonfire",
+    id: 'E3',
     text: () => {
       return `You and your crew are well rested`;
     },
@@ -5104,6 +5134,7 @@ royalNavy = {
   //MAYAN RUINS
   mayanCombat = {
     title: "Mayan Ruin",
+    id: 'beta',
     text: () => {
       return ``;
     },
@@ -5126,6 +5157,7 @@ royalNavy = {
     ],
   };
   mayanRuin = {
+    id: 'beta',
     title: "Mayan Ruin",
     text: () => {
       return `You've found a Mayan ruin.<br>It looks abandoned but there might still be something valuable inside.<br><br>What will you do?`;
@@ -5152,37 +5184,11 @@ royalNavy = {
     ],
   };
   mayanRuinA = {
+    id: 'beta',
     title: "Mayan Ruin",
     text: () => {
       addBrandmark();
       return `After exploring for a while, you trip over a wire and fall on the ground.<br>There's still a chance to find something.`;
-    },
-    options: [
-      {
-        text: () => {
-          return "Continue Exploring";
-        },
-        effect: async (button) => {
-          let ran = await random(seed[4], 3);
-          if (ran > 1) enterEvent(mayanRuinB, button);
-          else enterEvent(mayanRuinC, button);
-        },
-      },
-      {
-        text: () => {
-          return "Leave";
-        },
-        effect: (button) => {
-          button.click();
-        },
-      },
-    ],
-  };
-  mayanRuinB = {
-    title: "Mayan Ruin",
-    text: () => {
-      addBrandmark();
-      return `You've set of another trap.<br>Is it worth it to go on?`;
     },
     options: [
       {
@@ -5205,7 +5211,36 @@ royalNavy = {
       },
     ],
   };
+  mayanRuinB = {
+    id: 'beta',
+    title: "Mayan Ruin",
+    text: () => {
+      addBrandmark();
+      return `You've set of another trap.<br>Is it worth it to go on?`;
+    },
+    options: [
+      {
+        text: () => {
+          return "Continue Exploring";
+        },
+        effect: async (button) => {
+          let ran = await random(seed[4], 2);
+          if (ran >= 1) enterEvent(mayanRuinB, button);
+          else enterEvent(mayanRuinC, button);
+        },
+      },
+      {
+        text: () => {
+          return "Leave";
+        },
+        effect: (button) => {
+          button.click();
+        },
+      },
+    ],
+  };
   mayanRuinC = {
+    id: 'beta',
     title: "Mayan Ruin",
     text: () => {
       mayanRuinC.treas = pl.mayanArr[0];
@@ -5238,6 +5273,7 @@ royalNavy = {
   
   //MONKEY JUNGLE
   MonkeyJungle = {
+    id: 'C31',
     title: "Monkey in the Jungle",
     text: () => {
       MonkeyJungle.coins = pl.resourses[0];
@@ -5266,6 +5302,7 @@ royalNavy = {
     ],
   };
   MonkeyJungleA = {
+    id: 'C31',
     title: "Monkey in the Jungle",
     text: () => {
       return `The Jungle is getting thicker but you almost caught the monkey.`;
@@ -5292,6 +5329,7 @@ royalNavy = {
     ],
   };
   MonkeyJungleB = {
+    id: 'C31',
     title: "Monkey in the Jungle",
     text: () => {
       return `You lost site of the monkey but you find your purse on the ground along with some extra doubloons and a couple of bananas.<br>That monkey must have robbed some more pirates.`;
@@ -5312,13 +5350,13 @@ royalNavy = {
       {
         text: () => {
           return `Take the loot and leave [ +${
-            MonkeyJungle.coins + Math.round(MonkeyJungle.coins * 0.33)
+            MonkeyJungle.coins + Math.round(MonkeyJungle.coins * 0.2)
           } <span class="icon">h</span>]`;
         },
         effect: (button) => {
           addResource(
             0,
-            MonkeyJungle.coins + Math.round(MonkeyJungle.coins * 0.33)
+            MonkeyJungle.coins + Math.round(MonkeyJungle.coins * 0.2)
           );
           button.click();
         },
@@ -5328,6 +5366,7 @@ royalNavy = {
   
   //SEA MONKEY
   SeaMonkey = {
+    id: 'C31',
     title: "Monkey in the Jungle",
     text: () => {
       return `Your crew is chasing a monkey on deck. It's the monkey you followed in the jungle.<br>It seams to be looking for something....`;
@@ -5373,6 +5412,7 @@ royalNavy = {
     ],
   };
   SeaMonkeyA = {
+    id: 'C31',
     title: "Monkey in the Jungle",
     text: () => {
       addBrandmark("h");
@@ -5390,6 +5430,7 @@ royalNavy = {
     ],
   };
   SeaMonkeyB = {
+    id: 'C31',
     title: "Monkey in the Jungle",
     text: () => {
       return `It grabs the doubloons from your hand and jumps off the ship into the water. The monkey quickly swims back to shore and runs into the jungle.`;
@@ -5406,6 +5447,7 @@ royalNavy = {
     ],
   };
   SeaMonkeyC = {
+    id: 'C31',
     title: "Monkey in the Jungle",
     text: () => {
       return `You hand out the bananas and the monkey jumps on your shoulder, grabbing the bananas. He holds the bananas tight and looks happy at you. Apperently you've made a new friend.`;
@@ -5436,6 +5478,7 @@ royalNavy = {
   
   //MARKET
   Market = {
+    id: 'beta',
     title: "Market",
     text: async () => {
       let t = 5;
@@ -5538,6 +5581,7 @@ royalNavy = {
     ],
   };
   MarketB = {
+    id: 'beta',
     title: "Market",
     text: async () => {
       MarketB.r = (await random(seed[7], 9)) + 3;
@@ -5603,6 +5647,7 @@ royalNavy = {
   };
   //WHIRLPOOL
   Whirlpool = {
+    id: 'beta',
     title: "Whirlpool",
     text: async () => {
       return `The current of the sea gets stronger and the wind begins to blow. A whirlpool forms in the distance.<br>Your crew sees a barrel full of food, a raft of hopeless pirates, and a treasure chest drifting towards the whirlpool.<br>You only have time to save <strong>1</strong> thing before your ship can no longer escape the whirlpool.`;
@@ -5653,6 +5698,7 @@ royalNavy = {
     ],
   };
   WhirlpoolA = {
+    id: 'beta',
     title: "Whirlpool",
     text: async () => {
       return `${Whirlpool.txt} and turn your ship to avoid the whirlpool.<br>It was close but you've kept controle over your ship.`;
@@ -5670,6 +5716,7 @@ royalNavy = {
   };
   //SHRINE
   Shrine = {
+    id: 'beta',
     title: "Shrine",
     text: async () => {
       return `There's a shrine up ahead. They say it has magical properties and releaves you of all your sins.`;
@@ -5703,6 +5750,7 @@ royalNavy = {
   };
   //CURSED HAMMER
   CursedHammer = {
+    id: 'beta',
     title: "Cursed Hammer",
     text: async () => {
       CursedHammer.dmg = 4;
@@ -5742,13 +5790,13 @@ royalNavy = {
   };
   //DEAD PIRATE
   DeadPirate = {
+    id: 'beta',
     title: "Dead Pirate",
     text: async () => {
       let brokenT = 0
       for(i=0;i<4;i++){
         brokenT += await random(seed[5], 9);
       }
-      console.log(brokenT);
       DeadPirate.brokenDice = {faceVal: [['w'],['F'],['S'],['a'],['F'],['S']], broken: brokenT,};
       DeadPirate.brokenDice.faceVal.forEach(v=> v.broken = true);
       DeadPirate.tipDice = makeDie(DeadPirate.brokenDice, pl);
@@ -5780,6 +5828,7 @@ royalNavy = {
     ],
   };
   DeadPirateA = {
+    id: 'beta',
     title: "Dead Pirate",
     text: async () => {
       return `You found a new dice!<br><br>It looks kind of broken.<br>Better be careful with it. When it breaks the whole thing would be useless.`;
@@ -5805,6 +5854,7 @@ royalNavy = {
   };
   //BUTCHER
   Butcher = {
+    id: 'beta',
     title: "Butcher",
     text: async () => {
       return `There's a butcher in town. The man only had 1 eye, a wooden leg and a hook for a hand.<hr><i>"Can you give a hand to an old sailer. I'll pay good doubloons for it."</i>`;
@@ -5857,6 +5907,7 @@ royalNavy = {
     ],
   };
   ButcherA = {
+    id: 'beta',
     title: "Butcher",
     text: async () => {
       return `Without any hazetasion the butcher cuts ${Butcher.txt}.<br><br><i>"Thank's for your donation."</i><br><br>You still got some good money out of it.`;
@@ -5875,6 +5926,7 @@ royalNavy = {
 
   //Big Fish
   BigFish = {
+    id: 'beta',
     title: "Big Fish",
     text: async () => {
       return `You caught a big tuna!!<br><br>Look at the size of it. Lets feast!`;
@@ -5920,7 +5972,7 @@ royalNavy = {
     battleModal.style.opacity = "1";
     await sleep(800);
     //DRAW BACKGROUND
-    changeBackground("event");
+    changeBackground("event-bg");
     button.style = "opacity: 0; pointer-events: none;";
   
     if (event == "?") event = pl.landEvents[0];
@@ -5962,8 +6014,11 @@ royalNavy = {
     makeElmnt("p", "event-header", event.title, dialog);
   
     //IMAGE
-    let image = makeElmnt("img", "event-img", "", innerContainer);
-    image.src = `../images/Event/${event.title}.svg`;
+    let svg = getSVG(event.id);
+    svg.classList.add('event-img');
+    innerContainer.append(svg);
+    // let image = makeElmnt("img", "event-img", "", innerContainer);
+    // image.src = `../images/Event/${event.title}.svg`;
   
     //TEXT
     let text = await event.text();
@@ -5997,17 +6052,12 @@ royalNavy = {
   };
 
   const startNewGame = async () => {
-    while(doc === ''){
-      await sleep(20);
+    if(pl.stage == 1){
+      pl.landEvents.push('Shrine');
     }
-  Load();
-  
-    if(pl.stage == 1) pl.landEvents.push(Shrine);
-  
-    Save();
-    // if(seedCheck.join('') == 'tutorial'){
+    if(pl.stage == 0){
       pl.tut = true;
-    // }
+    }
     await shuffle(pl.shopTr, seed[5]);
     await shuffle(pl.comTr, seed[5]);
     await shuffle(pl.uncomTr, seed[5]);
@@ -6019,13 +6069,11 @@ royalNavy = {
     makeMap();
     
     await sleep(500);
-    if(pl.stage == 0) enterRoom("T");
-    else enterRoom('pros')
+    // if(pl.stage == 0) enterRoom("T");
+    // else enterRoom('pros')
+    enterRoom('pros')
     await sleep(3000);
     body.classList = '';
   };
   
   startNewGame();
-  
-  
-  
