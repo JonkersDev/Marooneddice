@@ -302,9 +302,13 @@ C0 = {
     name: "Amethyst",
     id: "C15",
     mot: "Acts 3:15",
-    effect: (char) => {char.Ame = true},
+    effect: (char) => {
+      char.Ame = true;
+      rewardArr.push(raiseMHP);
+      opArr.push('Raise max hp by 1');
+    },
     removeEffect: (char) => {char.Ame = false;},
-    tip: `<p>Enemies lose 25% of their max hp at the start of battle<br>-&-<br></p>`,
+    tip: `<p>Enemies lose 20% of their max hp at the start of battle<br>-&-<br>You have the option to raise your max hp by 1 at the end of combat</p>`,
     pr: 200,
     color: '#e785ff',
   };
@@ -495,7 +499,7 @@ C0 = {
     removeEffect: (char) => {
       char.BK = false;
     },
-    tip: `<p><strong class="inline"><span>F</span></strong> has a 20% chance to stun an enemy</p>`,
+    tip: `<p><strong class="inline"><span>F</span></strong> has a 15% chance to stun an enemy</p>`,
     pr: 100,
   };
   C30 = {
@@ -596,6 +600,46 @@ C0 = {
     tip: `<p>Raise your max HP by 8</p>`,
     pr: 120,
   };
+  C37 = {
+    name: "Wooden Pauldron",
+    id: "C37",
+    mot: "The best defence is a good offence",
+    effect: async (char) => {
+      char.WP = true;
+    },
+    removeEffect: (char) => {
+      char.WP = false;
+    },
+    tip: `<p>Lose 2 shield when using <strong class="inline"><span>T</span></strong> instead of 50%</p>`,
+    pr: 150,
+  };
+
+  C38 = {
+    name: "Red Dice",
+    id: "C38",
+    mot: "Luck of the roll",
+    effect: async (char) => {
+      char.RD = true;
+    },
+    removeEffect: (char) => {
+      char.RD = false;
+    },
+    tip: `<p>Reroll a random dice when getting hit</p>`,
+    pr: 150,
+  };
+  C39 = {
+    name: "Wooden Shield",
+    id: "C39",
+    mot: "Block",
+    effect: async (char) => {
+      char.C39 = true;
+    },
+    removeEffect: (char) => {
+      char.C39 = false;
+    },
+    tip: `<p>Start every combat with 4 shield</p>`,
+    pr: 100,
+  };
   
   // pl.comTr = [C1, C3, C25];
   // pl.uncomTr = [C4, C7, C8, C2, C18, C29];
@@ -677,12 +721,12 @@ C0 = {
   };
   
   let sleepA = {
-    name: `Gunner`,
-    hp: 7,
+    name: `deckhand`,
+    hp: 8,
     onDeath: "pirateCaveR",
     dieArr: [
       {
-        faceVal: [["S"], ["S"], ["S"], ["F"], ["F"], ["C"]],
+        faceVal: [["S"], ["S"], ["F"], ["F"], ["C"], ["C"]],
       },
     ],
   };
@@ -699,12 +743,12 @@ C0 = {
   };
   
   let sleepC = {
-    name: `Sailor`,
-    hp: 7,
+    name: `Gunner`,
+    hp: 10,
     onDeath: "pirateCaveR",
     dieArr: [
       {
-        faceVal: [["S"], ["S"], ["S"], ["F"], ["F"], ["C"]],
+        faceVal: [["S"], ["S"], ["S"], ["F"], ["G"], ["G"]],
       },
     ],
   };
@@ -727,11 +771,10 @@ C0 = {
         faceVal: [["S"], ["S"], ["S", "S"], ["F", "F"], ["F", "F"], ["C"]],
       },
     ],
-  };
-  //
+  }
   let deckhand = {
     name: `Deckhand`,
-    hp: 14,
+    hp: 12,
     dieArr: [
       {
         faceVal: [["S"], ["S"], ["S"], ["F", "F"], ["C"], ["C"]],
@@ -758,7 +801,7 @@ C0 = {
   
   let cook = {
     name: `Cook`,
-    hp: 16,
+    hp: 26,
     dieArr: [
       {
         faceVal: [["S"], ["S"], ["F"], ["F"], ["C"], ["C"]],
@@ -790,7 +833,7 @@ C0 = {
   
   let blacksmith = {
     name: `Blacksmith`,
-    hp: 16,
+    hp: 28,
     dieArr: [
       {
         faceVal: [["S"], ["S", "S"], ["R"], ["R"], ["C"], ["C", "C"]],
@@ -842,8 +885,9 @@ C0 = {
     ],
   };
   
-  let seymor = {
-    name: `Seymor`,
+  seymor = {
+    name: `Thomas`,
+    Lastname: `'Seymor' Gates`,
     hp: 35,
     dieArr: [
       {
@@ -868,10 +912,92 @@ C0 = {
     onDeath: 'endStage'
   };
 
+  Stede = {
+    name: `Stede`,
+    Lastname: `Bonnet`,
+    hp: 22,
+    dieArr: [
+      {
+        faceVal: [["S"], ["S"], ["S", "S"], ["I"], ["I", 'I'], ["I", "I"]],
+      },
+      {
+        faceVal: [["S", "S"], ["S", "S"], ["T"], ["T"], ["T"], ["T"]],
+      },
+      {
+        faceVal: [["S"], ["S"], ["F", "F"], ["F", "F"], ["T"], ["T"]],
+      },
+    ],
+    enTr: ["C37"],
+    type: "B",
+    onDeath: 'endStage'
+  };
+
+  Mary = {
+    name: `Mary`,
+    Lastname: `Read`,
+    hp: 20,
+    dieArr: [
+      {
+        faceVal: [["D"], ["D"], ["D", "D"], ["D", "D"], ["q"], ["q"]],
+      },
+      {
+        faceVal: [["S"], ["S", "S"], ["D"], ["D"], ['D'], ["D", "D"]],
+      },
+    ],
+    effect: 'callBackup',
+    enTr: ["C38"],
+    type: "B",
+    onDeath: 'endStage'
+  };
+
+const callBackup = ()=>{
+  if(charArr.length < 4){
+    let en = JSON.parse(JSON.stringify(deckhand));
+    let enChar = createChar(en, enArea);
+    enemyArr.push(enChar);
+    enChar.type = "enemy";
+    charArr.push(enChar);
+    enChar.obj.dieList.forEach(d=>{rollDice(d)});
+    charArr.forEach((c) => {
+      c.char.img.addEventListener("mouseenter", () => {
+        if (
+          dragging[0] == "H" ||
+          dragging[0] == "I" ||
+          dragging[0] == "J" ||
+          dragging[0] == "Q" ||
+          dragging[0] == "S" ||
+          dragging[0] == "X" 
+        ) {
+          if (c.type == "player") {
+            c.classList.add("hovering");
+          }
+        } else if (
+          dragging[0] == "B" ||
+          dragging[0] == "C" ||
+          dragging[0] == "D" ||
+          dragging[0] == "E" ||
+          dragging[0] == "F" ||
+          dragging[0] == "G" ||
+          dragging[0] == "K" ||
+          dragging[0] == "P" ||
+          dragging[0] == "R" ||
+          dragging[0] == "T"
+        ) {
+          if (c.type == "enemy") c.classList.add("hovering");
+        }
+      });
+      c.addEventListener("mouseleave", () => {
+        c.classList.remove("hovering");
+      });
+    });
+  }
+}
+
   let endStageA = false
 
   const endStage = async ()=>{
    return new Promise( async (resove)=>{
+     win = true;
      await sleep(1000);
      if(pl.stage == 2){
        EndGame(true);
@@ -913,7 +1039,7 @@ C0 = {
   const eliteEnemys = [[cook], [blacksmith], [blacksmith], [cook], [blacksmith], [blacksmith], [blacksmith], [blacksmith], [blacksmith]];
   const mayanEnemys = [[Horado], [Shamaan], [Horado, Shamaan], [Horado, Horado, Shamaan]];
   
-  const allenemies = [lostSailor, deckhand, cooper, helmsman, Gunner, cook, blacksmith, Horado, Shamaan, seymor];
+  const allenemies = [lostSailor, deckhand, cooper, helmsman, Gunner, cook, blacksmith, Horado, Shamaan, seymor, Stede, Mary];
   const battleModal = document.querySelector(".scr-transition");
   let pl = {};
   
@@ -1389,14 +1515,11 @@ C0 = {
       t = window[t];
       addTreasure(t, pl, true);
     });
-    console.log(pl.comTr)
-    console.log(pl.uncomTr)
-
     pl.resourses.forEach((r, i)=>{
       document.querySelector(`.r${i}`).innerHTML = r;
     })
 
-    for(i = 0; i < 37; i++){
+    for(i = 0; i < 40; i++){
       let obj = window[`C${i}`];
       let tip = getSVG(`C${i}`);
       obj.tip = `<span>${tip.outerHTML}</span>${obj.tip}`;
@@ -1502,7 +1625,7 @@ const tips = {
   C: `Deals <strong class="dmg">3</strong> dmg for every symbol on this face`,
   D: `Deals <strong class="dmg">1</strong> dmg + 1 dmg for every <strong class="inline"><span>D</span></strong> played this turn`,
   E: `Deals <strong class="dmg">2</strong> dmg for every symbol on this face. Gain 1 shield if the target has shield`,
-  F: `Deals <strong class="dmg">2</strong> dmg and has 10% chance to stun a enemy for every symbol on this face`,
+  F: `Deals <strong class="dmg">2</strong> dmg and has 5% chance to stun a enemy for every symbol on this face`,
   G: `Deals <strong class="dmg">4</strong> dmg for every symbol on this face and turns it into a <strong class="inline"><span>J</span></strong>`,
   H: `Heal 1 hp for every symbol on this face`,
   I: `Grants 3 shield and applies 1 weak for every symbol on this face`,
@@ -1512,7 +1635,7 @@ const tips = {
   Q: `???`,
   R: `Deals <strong class="dmg">2</strong> piercing dmg for every symbol on this face`,
   S: `Grants 2 shield for every symbol on this face`,
-  T: `Deals dmg equal to your shield and lose 2 shield for every symbol on this face`,
+  T: `Deals dmg equal to your shield and lose 50% of your shield for every symbol on this face`,
   X: `Grants 1 rage for every symbol on this face`,
   a: `Chain this die when this dieface is rolled`,
   c: `Chain a random die when this dieface is rolled`,
@@ -1691,13 +1814,12 @@ const removeFromArray = async (arr, obj) => {
 
 
 async function rollDice(die) {
-    playSound("roll");
     if (die.classList.contains("chained")) return;
   
     // let result = 6;
     let result = (await random(seed[1], 5)) + 1;
   
-    if (die.obj.faceVal[result - 1] == "x") result = await newResult(die);
+    if (die.obj.faceVal[result - 1] == "x") result = await newResult(die.obj);
     die.dataset.roll = result;
     die.obj.roll = die.obj.faceVal[result - 1];
     toggleClasses(die);
@@ -1705,6 +1827,11 @@ async function rollDice(die) {
     await sleep(1200);
     let owner = die.obj.owner;
     let val = die.obj.faceVal[result - 1][0];
+    if(owner.container.type == 'enemy'){
+      let v = die.obj.roll[0];
+      if (v == "S" || v == "H" || v == "I" || v == "J") die.obj.target = owner;
+      else die.obj.target = pl;
+    }
     if (val == val.toLowerCase()) {
       brandMark[val](die, owner);
       if (owner.restraint == true) {
@@ -1737,13 +1864,16 @@ async function rollDice(die) {
     w: (die, owner) => {
       addStatus("w", 1, owner);
     },
+    q: (die, owner) => {
+      let effect = eval(owner.effect);
+          effect();
+    },
   };
   
   const newResult = async (die) => {
     return new Promise(async(resolve, reject)=>{
-      let val = (await random(seed[1], 5)) + 1;
-      console.log(die);
-      if(die.obj.faceVal[val -1] != 'x') resolve(val);
+      let val = (await random(seed[1], 5));
+      if(die.faceVal[val] != 'x') resolve(val);
       else val = await newResult();
       resolve(val)
     })
@@ -1804,7 +1934,7 @@ let roomType = [
   ["T", "C", "T", "C"],
   ["A", 'A', "R", "?"],
   ["A", "C", "?", "S", "S"],
-  ["A", "A", "C", "!", "?", "M"],
+  ["A", "A", "!", "?", "M"],
   ["R"],
 ];
 const waveArr = [];
@@ -2024,18 +2154,10 @@ const makeWave = async (wave, oldWave) => {
   }
 };
 
-const roomTip = {
-  B: "captain",
-  A: "pirate",
-  C: "quartermaster",
-  F: "message bottle",
-  M: `Ruins`,
-  R: "bonfire",
-  S: "tavern",
-  T: "treasure chest",
-};
+let roomTip = {};
 
 const makeRoom = async (r) => {
+ 
   if (r.val == 1) {
     if (roomType[r.wave].length - 1 > 1)
       type = await random(seed[2], roomType[r.wave].length - 1);
@@ -2262,6 +2384,7 @@ const enterRoom = async (type) => {
           nextRoom();
         }
         openMap();
+        map.pick = makeElmnt('p', 'pick', 'Pick a location', body);
         resolve();
         inRoom = false;
         setTimeout(() => {
@@ -2280,7 +2403,8 @@ const enterRoom = async (type) => {
         removeFromArray(eliteEnemys, eliteEnemys[r]);
       } else if (type == "M") enterUnkownLand(room, button, mayanEvents[r]);
       else if (type == "B") {
-        enterCombat(room, button, [seymor], "B");
+        enterCombat(room, button, [window[pl.bosses[0]]], "B");
+        removeFromArray(pl.bosses, pl.bosses[0]);
       } else if (type == "?") {
         let ranEv = await random(seed[4], 9);
         if (ranEv <= 4) enterUnkownLand(room, button, "?");
@@ -2299,6 +2423,7 @@ const enterRoom = async (type) => {
       else if (type == "pros") {
         setTimeout(()=>{
           button.click();
+          makeElmnt('div', 'stage', 'Stage ' + (pl.stage + 1), body);
         }, 1000)
       } else if (type == "START") button.click();
     }
@@ -2360,6 +2485,7 @@ const openMap = () => {
 };
 
 const closeMap = () => {
+  map.pick.remove();
   playSound("paper2");
   if (document.querySelector(".close-map"))
     document.querySelector(".close-map").remove();
@@ -2456,6 +2582,7 @@ function dragElement(elmnt) {
             dragging[0] == "H" ||
             dragging[0] == "I" ||
             dragging[0] == "J" ||
+            dragging[0] == "Q" ||
             dragging[0] == "S" ||
             dragging[0] == "X"
           ) {
@@ -2685,9 +2812,14 @@ const enterCombat = async (room, btn, enArr, type) => {
       pl.reroll--;
       pl.reDie.firstChild.dataset.roll = pl.reroll;
       toggleClasses(pl.reDie.firstChild);
+      let rolling = false;
       pl.dieList.forEach((d) => {
-        if(!d.obj.used) rollDice(d);
+        if(!d.obj.used){
+          rolling = true;
+          rollDice(d);
+        } 
       });
+      if(rolling == true) playSound("roll");
       pl.reDie.style.pointerEvents = "none";
       setTimeout(() => {
         pl.reDie.style.pointerEvents = "";
@@ -2712,7 +2844,7 @@ const enterCombat = async (room, btn, enArr, type) => {
   room.append(endTurnBtn);
 
   //CREATE ENEMY AREA
-  let enArea = makeElmnt("div", "en-area", "", room);
+  enArea = makeElmnt("div", "en-area", "", room);
 
   //CREATE ENEMYS
   enArr.forEach((nen) => {
@@ -2730,6 +2862,7 @@ const enterCombat = async (room, btn, enArr, type) => {
         dragging[0] == "H" ||
         dragging[0] == "I" ||
         dragging[0] == "J" ||
+        dragging[0] == "Q" ||
         dragging[0] == "S" ||
         dragging[0] == "X" 
       ) {
@@ -2762,6 +2895,7 @@ const enterCombat = async (room, btn, enArr, type) => {
       });
     }
     if (c.obj.Ruby) addStatus("r", 1, c.obj);
+    if (c.obj.C39) Shield(c.obj, 4);
 
     charArr.forEach(async (e) => {
       if (c.obj.Mask && e.type != c.type) addStatus("w", 1, e.obj);
@@ -2843,6 +2977,14 @@ const createChar = (char, container) => {
   char.statusCont = makeElmnt("div", "status-cont", "", char.container);
   char.dieCont = makeElmnt("div", "die-cont", "", char.container);
 
+  setTimeout(async() => {
+    char.img.style.transition = '1s';
+    char.img.style.left = '50%';
+    await sleep(1000);
+    char.img.style.transition = '';
+
+  }, Math.floor(300 + 100 * Math.random() * 5));
+
   //CREATE CHARACTER DICE
   char.dieList = [];
   let dieC = char.dieArr.length;
@@ -2886,9 +3028,9 @@ const useDie = async (owner, die, target, val) => {
         //FIST
         if (val[i] == "F") {
           attack(owner, target);
-          hit(target, 2, val[i], owner, 'punch');
-          let times = 10;
-          if (owner.BK) times = 5;
+          hit(target, 2, val[i], owner, 'punch', i);
+          let times = 20;
+          if (owner.BK) times = 7;
           let suc = Math.floor(Math.random() * times);
           if (suc == 0) {
             makeElmnt("p", "dam", "stunned", target.efCo);
@@ -2899,11 +3041,10 @@ const useDie = async (owner, die, target, val) => {
               addStatus("stun", true, target);
             });
           }
-          
           //KICK
         } else if(val[i] == "K"){
           attack(owner, target);
-          hit(target, 1, val[i], owner, 'punch');
+          hit(target, 1, val[i], owner, 'punch', i);
           addStatus('w', 1, target);
           
           //DAGGER
@@ -2911,13 +3052,13 @@ const useDie = async (owner, die, target, val) => {
           attack(owner, target);
           if(!owner.wetstone) owner.wetstone = 0;
           owner.dagger++;
-          hit(target, owner.dagger + owner.wetstone, val[i], owner, 'slice');
+          hit(target, owner.dagger + owner.wetstone, val[i], owner, 'slice', i);
           
           //HOOK
         } else if(val[i] == "E"){
           attack(owner, target);
           if(target.dp > 0) Shield(owner, 1);
-          hit(target, 2, val[i], owner, 'slice');
+          hit(target, 2, val[i], owner, 'slice', i);
           
           //SHIELD
         } else if (val[i] == "S") {
@@ -2931,18 +3072,19 @@ const useDie = async (owner, die, target, val) => {
           //THROW SHIELD
         } else if (val[i] == "T") {
           attack(owner, target);
-          hit(target, owner.dp, val[i], owner, 'punch');
-          Shield(owner, -2);
+          hit(target, owner.dp, val[i], owner, 'punch', i);
+          if(!owner.WP) Shield(owner, -Math.floor(owner.dp / 2));
+          else Shield(owner, -2);
           
           //CUTLASS
         } else if (val[i] == "C") {
           attack(owner, target);
-          hit(target, 3, val[i], owner, 'slice');
+          hit(target, 3, val[i], owner, 'slice', i);
 
           //RAPIER
         } else if (val[i] == "R") {
           attack(owner, target);
-          hit(target, 2, val[i], owner, 'slice');
+          hit(target, 2, val[i], owner, 'slice', i);
           
           //BOMB
         } else if (val[i] == "B") {
@@ -2950,15 +3092,15 @@ const useDie = async (owner, die, target, val) => {
             if (c.type != owner.container.type) {
               attack(owner, c.obj);
               if (c.obj == target && owner.AoC)
-              hit(c.obj, 2 + owner.AoC, val[i], owner, 'punch');
-              else hit(c.obj, 2, val[i], owner, 'punch');
+              hit(c.obj, 2 + owner.AoC, val[i], owner, 'punch', i);
+              else hit(c.obj, 2, val[i], owner, 'punch', i);
             }
           });
           
           //FLINTLOCK
         } else if (val[i] == "G") {
           attack(owner, target);
-          hit(target, 4, val[i], owner);
+          hit(target, 4, val[i], owner, '', i);
           val[i] = "J";
           die.childNodes[die.dataset.roll - 1].childNodes[i].innerHTML =
           "<span>J</span>";
@@ -3016,7 +3158,7 @@ const attack = async (owner, target) => {
 const statTip = {
   b: `Attacks have a 50% chance to miss. Lower this by at the end of its turn `,
   p: `loses 1 hp for each poison and lowers it by 1 at the and of its turn`,
-  r: `Attack deal 1 extra damage per rage this turn`,
+  r: `The first symbol on a dieface deals 1 extra damage per rage this turn`,
   w: `Attacks deal 1 less damage. Lower this by 1 at the end of its turn`,
   stun: `Can't do anything this turn`,
 };
@@ -3091,7 +3233,7 @@ const removeStatus = (icon, owner) => {
   });
 };
 
-const hit = async (target, val, icon, owner, ani) => {
+const hit = async (target, val, icon, owner, ani, ind) => {
   if (owner) {
     if (owner.b > 0) {
       let miss = await random(seed[1], 1);
@@ -3104,10 +3246,15 @@ const hit = async (target, val, icon, owner, ani) => {
     addResource(0, 1);
   }
   if(owner) {
-    val += owner.r - owner.weak;
-    if (owner.Ruby) val += owner.r;
+    val -= owner.weak;
+    if (ind == 0) val += owner.r;
+    if (owner.Ruby && ind == 0) val += owner.r;
   }
   if (val < 0) val = -1;
+  if(val >= 0 && target.RD){
+    console.log('reroll')
+    rollDice(target.dieList[await random(seed[1], target.dieList.length -1)])
+  }
   //DMG COUNTER
   let dam = makeElmnt("p", "dam", "", target.container);
   //HIT ICON ON CONTAINER
@@ -3148,8 +3295,12 @@ const hit = async (target, val, icon, owner, ani) => {
   dam.style.left = `${Math.random() * 200 - 50}%`;
   await sleep(150);
   body.classList.remove("shake");
-  if (target.hp <= 0) {
-    if (target == pl) EndGame(false);
+  if (target.hp <= 0 && !target.dead) {
+    target.dead = true;
+    if (target == pl) {
+      win = true;
+      EndGame(false);
+    }
     if (target.container.type == "enemy") {
       if (target.type == "C") pl.quaDef++;
       else if (target.type == "B") pl.bossDef++;
@@ -3160,14 +3311,15 @@ const hit = async (target, val, icon, owner, ani) => {
       }, 1000);
       await sleep(10);
       removeFromArray(charArr, target.container);
-      if (target.onDeath) {
-        let onDeath = eval(target.onDeath);
-        await onDeath();
-      }
       let enC = 0;
       charArr.forEach((c) => {
         if (c.type == "enemy" && c.obj.hp > 0) enC++;
       });
+      if (target.onDeath) {
+        if(enC == 0) win = true;
+        let onDeath = eval(target.onDeath);
+        await onDeath();
+      }
       if (enC == 0 && win == false) {
         win = true;
         closeEndTurn();
@@ -3218,6 +3370,7 @@ const startTurn = async () => {
       EndCharTurn(c.obj);
     }
     //RESET DICE
+    playSound("roll");
     c.obj.dieList.forEach(async (d) => {
       d.obj.used = false;
       d.childNodes.forEach((n) => {
@@ -3231,9 +3384,6 @@ const startTurn = async () => {
       //REROLL ALL DICE
       d.classList.remove("chained");
       await rollDice(d);
-      let v = d.obj.roll[0];
-      if (v == "S" || v == "H" || v == "I" || v == "J") d.obj.target = c.obj;
-      else d.obj.target = pl;
     });
   });
   //AWAIT POISON
@@ -3287,7 +3437,9 @@ const endTurn = async () => {
   await sleep(awP);
   playBan("Enemy Turn");
   //START PLAYER TURN
-  setTimeout(startTurn, delay + 2000);
+    setTimeout(()=>{
+      if(win == false) startTurn();
+    }, delay + 2000);
 };
 
 const EndCharTurn = (char) => {
@@ -3456,7 +3608,7 @@ const addDieface = async () => {
 const makeNewDieFace = async (val, preA, preB, add, plus) => {
   return new Promise(async (resolve, reject) => {
     //SET VALUE FOR EVERY SYMBOL
-    valArr = ["F", "S", "D", "R", "C", 'K', "G", "B", "E","T", "I", "X","F", "S", "D", "R", "C", 'K', "G", "B", "E","T", "I", "X"];
+    valArr = ["B", "S", "D", "R", "C", 'K', "G", "B", "E","T", "I", "X","F", "S", "D", "R", "C", 'K', "G", "B", "E","T", "I", "D"];
     await shuffle(valArr, seed[6]);
     //CHECK IF VALUE HAS BEEN USED
     valArr.forEach((v) => {
@@ -3651,7 +3803,13 @@ const createLoot = async (val) => {
   });
 };
 
+const raiseMHP = ()=>{
+  pl.mhp += 1;
+  heal(pl, 1);
+}
+
 const rewardArr = [healing, upgrade, addDieface];
+let opArr = [`Heal ${3 + pl.AoH} HP`, "Upgrade a Diceface", "Add a new Diceface",];
 
 const booty = async () => {
   //GET NEW LOOT
@@ -3722,15 +3880,10 @@ const booty = async () => {
   let LO1 = makeElmnt("div", "loot-option1 loot-option", "", rewardCon);
   let LO2 = makeElmnt("div", "loot-option2 loot-option", "", rewardCon);
   if (combatType == "M") LO1.num = 0;
-  else LO1.num = await random(seed[7], 1);
+  else LO1.num = await random(seed[7], rewardArr.length - 2);
   if (combatType == "M") LO2.num = 2;
-  else LO2.num = (await random(seed[7], 1 - LO1.num)) + LO1.num + 1;
+  else LO2.num = (await random(seed[7], rewardArr.length - 2 - LO1.num)) + LO1.num + 1;
   if (!pl.AoH) pl.AoH = 0;
-  let opArr = [
-    `Heal ${3 + pl.AoH} HP`,
-    "Upgrade a Diceface",
-    "Add a new Diceface",
-  ];
   LO1.innerText = opArr[LO1.num];
   let lootimage1 = getSVG(`reward${LO1.num}`);
   lootimage1.classList.add('loot-image');
@@ -4539,7 +4692,7 @@ royalNavy = {
           }
           spot.type = "T";
           await sleep(600);
-          document.querySelector(`#floor13`).scrollIntoView({ behavior: "smooth", block: "center" });
+          spot.dot.scrollIntoView({ behavior: "smooth", block: "center" });
           await sleep(800);
           spot.dot.innerHTML = `<div class="burried"><strong>burried treasure</strong>X</div>`;
           playSound("scr");
@@ -6051,12 +6204,79 @@ royalNavy = {
     });
   };
 
+  const glosInd = [`<div class="cat">Dicesymbols</div><li><span>B</span> Deals 2 dmg to all enemy's</li>
+  <li><span>C</span> Deals 3 dmg</li>
+  <li><span>D</span> Deals 1 dmg + 1 dmg for every <strong class="inline">D</strong> played this turn</li>
+  <li><span>E</span> Deals 2 dmg and gain 1 shield if the target has shield</li>
+  <li><span>F</span> Deals 2 dmg and has 5% chance to stun a enemy</li>
+  <li><span>G</span> Deals 4 dmg and turns it into a <strong class="inline">J</strong></li>
+  <li><span>H</span> Heal 1 hp</li>
+  <li><span>I</span> Grants 3 shield and applies 1 weak</li>
+  <li><span>J</span> Turns into a <strong class="inline">G</strong></li>
+  <li><span>K</span> Deals 1 dmg and applies 1 weak</li>
+  <li><span>P</span> Apply 1 poison</li>
+  <li><span>Q</span> ???</li>
+  <li><span>R</span> Deals 2 piercing dmg</li>
+  <li><span>S</span> Grants 2 shield</li>
+  <li><span>T</span> Deals dmg equal to your shield and lose 50% of your shield</li>
+  <li><span>X</span> Grants 1 rage</li>`, `<div class="cat">Brandmarks</div><li><span style="color: black">a</span> Chain this die when this dieface is rolled</li>
+  <li><span style="color: black">c</span> Chain a random die when this dieface is rolled</li>
+  <li><span style="color: black">e</span> Gain 1 blind when this dieface is rolled</li>
+  <li><span style="color: black">h</span> lose 1 reroll when this dieface is rolled</li>
+  <li><span style="color: black">q</span> ???</li>
+  <li><span style="color: black">w</span> Gain 1 weak when this dieface is rolled</li>
+  <li><span style="color: black">x</span> This dieface can't be rolled</li>
+  <li></li>
+  <div class="cat">Status Effects</div>
+  <li><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.4 27.39" id="st-b"><g transform="matrix(.897 0 0 .897 -109.5 -75.61)" fill="#9a784e" stroke-width=".2949"><path d="m128.7 95.58-5.008 5.433 4.488 4.583 5.764 3.402 7.229 0.0473-1.654-2.221-4.772 0.1417-4.914-2.929-2.882-3.024 3.449-3.402z"/><path d="m132.4 99.62 0.0668 3.608 2.639 2.305 3.875 0.5345z"/><path d="m127.7 92.13 0.0334 0.1336 18.35 18.53 1.94-1.84-2.251-2.256 2.56-2.181 2.806-3.763-3.52-4.214-6.638-3.889-6.756-0.02363-3.142 1.772 1.488 1.701 2.744-1.479 4.85 0.09137 6.092 3.714 2.249 2.34-1.925 2.222-2.598 1.918-1.599-1.602 0.6432-3.009-1.66-3.38-4.003-1.281-2.137 0.5016-5.712-5.73z"/></g></svg></span> Attacks have a 50% chance to miss</li>
+  <li><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 45.64 40.83" id="st-p"><g transform="translate(-60.71 -172.6)" fill="#9a784e" stroke-opacity="0"><path d="m70.58 185.7 2.661-3.118-1.452-1.371 0.2419-3.575-4.597-0.5644-0.2151 2.446-2.5 0.9676 0.3494 3.413 3.683 0.2419z"/><path d="m92.99 182.7 2.742 3.118 1.425-1.666 3.535 0.3494 0.8871-3.44-2.957-1.64-0.2957-1.666-4.005-0.4032 0.215 3.736z"/><path d="m72.01 201 1.825 1.102-0.019 2.908-0.8173 0.6842 0.5512 2.205-2.87 2.129-2.243-1.672 0.038-1.463-2.015-1.007 0.4372-3.44 3.307 0.4371z"/><path d="m93.62 205.2-0.0806-0.1075-0.5914-0.5913 0.0538-2.822 1.586-1.129 1.989 2.043 2.527-0.5107 1.694 3.118-2.527 1.478-0.3226 2.473-3.226 0.6719-1.909-1.908z"/><path d="m75.33 205v-4.225l-4.238-4.631v-8.693l3.717-4.062h16.95l3.531 3.859v9.303l-4.015 4.387 0.0186 3.92-3.81-4.164-0.3763-4.665 4.125 0.0288-0.1426-7.81-4.015 1.422v2.697l4.157 3.692-4.458 1.351 0.3339-1.38-3.995-3.716-3.658 3.709c2.676 7e-3 1.749 4e-5 7.653 7e-3l0.3763 4.665h-8.587l-4.256-4.651 3.569-3.9 0.0135-2.257-3.574-1.532-8e-3 7.688 3.5 2.322 1.5 1.639z"/></g></svg></span> loses 1 hp for each poison</li>
+  <li><span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" id="st-r"><g transform="translate(-65.48 -103.5)"><path d="m73.73 121.2-4.201-2.362-1.101-3.147 1.672-3.706-0.7288-3.017 2.389 2.075-0.08533 2.619 1.832-2.626-0.2272-2.724 1.174-1.996 1.651-1.078-0.579 2.732 0.9386 1.844 2.048 1.259 0.608-1.777 2.581-1.488-1.067 2.181-0.1118 1.923 1.554 3.915-1.122 3.531-2.891 1.552 1.237-1.879-0.9805-2.03 0.1999-1.629-1.261 1.361 0.1867 1.286-0.7146-1.765 0.3253-1.642-0.2752-1.245-1.354-1.215 0.2979 1.53-0.9465 2.104-0.9277 0.8052-0.5166-1.443-1.029-0.7905 0.4337 1.438-0.8627 2.317 0.3272 1.462z" fill="#9a784e" stroke-opacity="0"/></g></svg></span> The first symbol on a dieface deals 1 extra damage per rage</li>
+  <li><span><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 6" id="st-stun"><g transform="translate(-462 -273.5)"><g transform="matrix(.9622 0 0 .961 17.55 11.41)" fill="#9a784e" stroke-opacity="0" stroke-width="1.04"><path d="m463.5 273.8 0.1651 1.631-1.253 0.7193 1.441 0.3232 0.1726 1.536 0.9294-1.216 1.538 0.3363-0.8185-1.248 0.7367-1.543-1.643 0.6274z"/><path d="m466.5 275.6-0.3004 0.8317 0.5307 0.8035-0.6851-0.162-0.2717 0.6967 0.7374-0.375 0.6716 0.5217-0.1077-0.7978 0.7198-0.5792-0.9481-0.0776z"/></g></g></svg></span> Can't do anything this turn</li>
+  <li><span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.83 13.55" id="st-w"><g transform="matrix(.8273 0 0 .827 -428.1 -148)" fill="#9a784e" stroke="#000" stroke-opacity="0" stroke-width=".3199"><path d="m523.9 183.8-2.432 5.566-2.245 1.122 0.7951 2.198 1.777-0.5145 1.122 1.684 2.245-0.7484-0.4677-2.432 1.777-4.21-1.871 0.0935z"/><path d="m526.4 184.8 3.542 1.886 0.759 2.214 1.838-0.5631-0.127-2.008 1.365-1.784-1.086-1.635-1.771 0.7375-2.283-0.9702-0.1268 1.354z"/><path d="m527.2 189.8-0.5893 0.6558 0.5893 0.9227 0.7437-0.938z"/><path d="m529.8 191.3 1.544 0.0352-0.7016 1.31-0.5823-0.1619z"/><path d="m521.1 181.2-0.6765 1.492 0.5668 0.3317 1.444-0.597z"/><path d="m524.8 180.7 0.4925 1.537 0.4617-0.1492 0.8465-1.418z"/></g></svg></span> Attacks deal 1 less damage</li>
+  `]
+
+  document.querySelector('.q-icon').addEventListener('click', async ()=>{
+    let glos = makeElmnt('section', 'glos', `<div class="close-glos">X</div><h1>Glossary</h1>
+    <ul class="wrap">${glosInd[0]}</ul>
+    <div class="next-glos"></div>`, body);
+    glos.ind = 0;
+    playSound('paper2');
+    glos.querySelector('.close-glos').addEventListener('click', removeGlos);
+    glos.querySelector('.next-glos').addEventListener('mouseenter', ()=>{
+      playSound('hover')
+    });
+    glos.querySelector('.close-glos').addEventListener('mouseenter', ()=>{
+      playSound('hover')
+    });
+    glos.querySelector('.next-glos').addEventListener('click', ()=>{
+      playSound('paper2')
+      if(glos.ind == 0){
+        glos.querySelector('.next-glos').style = 'clip-path: polygon(0 50%, 100% 0, 100% 100%);'
+        glos.querySelector('.wrap').innerHTML = glosInd[1];
+        glos.ind = 1;
+      } else {
+        glos.querySelector('.next-glos').style = 'clip-path: polygon(100% 50%, 0 0, 0 100%);'
+        glos.querySelector('.wrap').innerHTML = glosInd[0];
+        glos.ind = 0;
+      }
+    })
+  })
+
+  const removeGlos = ()=>{
+    playSound('paper');
+    document.querySelectorAll('.glos').forEach(g=>{
+      g.remove();
+    });
+  };
+
   const startNewGame = async () => {
     if(pl.stage == 1){
       pl.landEvents.push('Shrine');
+    } else if(pl.stage == 2){
+      pl.seaEvents.push('UnderwaterChest')
     }
     if(pl.stage == 0){
-      pl.tut = true;
+      // pl.tut = true;
     }
     await shuffle(pl.shopTr, seed[5]);
     await shuffle(pl.comTr, seed[5]);
@@ -6065,6 +6285,17 @@ royalNavy = {
     await shuffle(pl.gemArr, seed[5]);
     await shuffle(pl.landEvents, seed[4]);
     await shuffle(pl.seaEvents, seed[4]);
+    await shuffle(pl.bosses, seed[1]);
+    roomTip = {
+      B: `Captain<br>${window[pl.bosses[0]].name} ${window[pl.bosses[0]].Lastname}`,
+      A: "pirate",
+      C: "quartermaster",
+      F: "message bottle",
+      M: `Ruins`,
+      R: "bonfire",
+      S: "tavern",
+      T: "treasure chest",
+    };
     
     makeMap();
     
@@ -6074,6 +6305,7 @@ royalNavy = {
     enterRoom('pros')
     await sleep(3000);
     body.classList = '';
+    // addTreasure(C39, pl)
   };
   
   startNewGame();

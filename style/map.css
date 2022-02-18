@@ -10,6 +10,47 @@
   z-index: 100;
 }
 
+.stage{
+  position: absolute;
+  width: 200vw;;
+  text-align: center;
+  color: white;
+  font-size: 30vh;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100000;
+  pointer-events: none;
+  opacity: 0;
+  animation: stage 3s 500ms ease forwards;
+}
+
+@keyframes stage {
+  40%{
+    opacity: 1;
+  }  
+  60%{
+    opacity: 1;
+  }
+  100%{
+    opacity: 0;
+  }
+}
+
+.pick{
+  position: absolute;
+  left: 50%;
+  color: #9a784e;
+  transform: translate(-50%);
+  bottom: 16vh;
+  font-size: 3vh;
+  z-index: 34;
+  text-shadow: -0.1vh -0.1vh 0 #fff, 0.1vh -0.1vh 0 #fff,
+  -0.1vh 0.1vh #fff, 0.1vh 0.1vh 0 #fff;
+  opacity: 0;
+  animation: fadein 1s 500ms ease forwards;
+}
+
 .open-map {
   -webkit-animation: openMap 0s forwards;
           animation: openMap 0s forwards;
@@ -163,6 +204,7 @@
 .map-container .map .boss .dot strong {
   position: absolute;
   left: 50%;
+  width: 100vw;
   -webkit-transform: translate(-50%, -100%);
           transform: translate(-50%, -100%);
   font-size: 1vh;
@@ -250,6 +292,7 @@
 
 .map-container .map .room .dot strong {
   position: absolute;
+  width: 100vh;
   left: 55%;
   -webkit-transform: translate(-50%, -80%);
           transform: translate(-50%, -80%);
@@ -261,6 +304,7 @@
   font-weight: lighter;
   text-shadow: none;
   text-align: center;
+  pointer-events: none;
 }
 
 .map-container .map .room .dot:hover {

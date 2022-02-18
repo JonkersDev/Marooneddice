@@ -230,7 +230,8 @@ h1 {
 
 .scr .char-container {
   position: relative;
-  width: 25vh;
+  /* width: 25vh; */
+  width: 0vh;
   height: 40vh;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -241,6 +242,13 @@ h1 {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  animation: enterChar 1s linear forwards;
+}
+
+@keyframes enterChar {
+  100%{
+    width: 25vh;
+  }  
 }
 
 .scr .char-container .name {
@@ -366,7 +374,7 @@ h1 {
   -webkit-transform: scale(0.99, 1) translate(-50%);
           transform: scale(0.99, 1) translate(-50%);
   height: 100%;
-  left: 50%;
+  left: -50vw;
   bottom: 3vh;
   -webkit-transform-origin: bottom;
           transform-origin: bottom;
@@ -383,6 +391,12 @@ h1 {
           align-items: center;
   -webkit-transition: 0.2s;
   transition: 0.2s;
+}
+
+@keyframes enterCombat {
+  100%{
+    left: 50%;
+  }
 }
 
 .scr .char-container .die-conta {
@@ -430,13 +444,22 @@ h1 {
   height: 2vh;
   text-align: center;
   line-height: 2.2vh;
-  font-size: 2.5vh;
+  font-size: 2.2vh;
   color: white;
   -webkit-clip-path: polygon(calc(0% + 3vh) 0%, 100% 0, calc(100% - 3vh) 100%, 0% 100%);
           clip-path: polygon(calc(0% + 3vh) 0%, 100% 0, calc(100% - 3vh) 100%, 0% 100%);
   opacity: 0.7;
   -webkit-transition: 0.6s ease;
   transition: 0.6s ease;
+  opacity: 0;
+  animation: health .5s 1.5s linear forwards;
+}
+
+@keyframes health {
+  100%{
+    opacity: 1;
+  }
+  
 }
 
 .scr .char-container .hp-bar::after {
@@ -459,7 +482,7 @@ h1 {
   z-index: -1;
   width: 100%;
   height: 100%;
-  background-color: red;
+  background-color: rgb(206, 13, 13);
   -webkit-clip-path: inherit;
           clip-path: inherit;
 }
@@ -899,6 +922,7 @@ h1 {
   position: absolute;
   width: 22vh;
   height: 22vh;
+  max-height: 22vh;
   bottom: 16vh;
   outline: none;
   border: 0.5vh solid #d2c89d;

@@ -922,7 +922,7 @@ body .top-bar .nav {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  width: 22vh;
+  width: 28vh;
 }
 
 body .top-bar .nav .icon {
@@ -941,9 +941,147 @@ body .top-bar .nav .icon {
 }
 
 body .top-bar .nav .map-icon {
-  -webkit-transform: rotate(15deg);
-          transform: rotate(15deg);
+  -webkit-transform: rotate(-75deg);
+          transform: rotate(-75deg);
 }
+
+body .top-bar .nav .q-icon {
+  -webkit-transform: translate(0.5vh, -1vh) scale(1.1);
+  transform: translate(0.5vh, -1vh) scale(1.1);
+}
+body .top-bar .nav .q-icon:hover {
+  animation: qIcon 0.4s linear infinite;
+  -webkit-animation: qIcon 0.4s ease infinite;
+}
+        
+@keyframes qIcon {
+  25%{
+    transform: translate(0.5vh, -1vh) scale(1.1) rotate(-10deg);
+  }
+  75%{
+    transform: translate(0.5vh, -1vh) scale(1.1) rotate(10deg);
+  }
+}
+
+body .glos{
+  position: fixed;
+  z-index: 34;
+  width: 100vw;
+  height: 90vh;
+  top: 5vh;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 522 1257'%3E%3Cpath d='m0.2863 12.08 74.64-12.08 375.4 0.3436 71.5 9.507-10.57 231.1 0.9506 264.4-27.56 8.433 30.11 0.6579 2.894 79.05-40.2 15.52 39.17 1.708 0.3795 61.82-16.85 4.535 15.55 3.887-11.01 254.6 5.166 162.1-23.67 3.414 25.9 5.034 2.899 43.91-52.31 11.02 55.35 1.395 3.583 76.07-98.15 18.34-338.2-0.1145-84.87-18.55 0.6372-78.58 18.13-5.689-18.34-37.22 18.97-192.2-19.46-146.1 25.27-3.887-23.34-11.2 23.66-333.2-12.34-134 21.69 19.01-19.45-50.72-11.02-109.7 24.61-6.66-22.69-9.9 7.44-75.01z' fill='%23d8d0ab' stroke-opacity='.06275'/%3E%3C/svg%3E");
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: center;
+  color: #9a794f;
+  text-shadow: none;
+}
+
+body .glos .close-glos{
+  position: absolute;
+  left: 12vw;
+  top: 4vh;
+  color: crimson;
+  font-size: 7.5vh;
+  transition: .2s ease;
+}
+
+body .glos .close-glos:hover{
+  transform: scale(1.1);
+}
+
+body .glos::after{
+  position: absolute;
+  width: 100vw;
+  height: 90vh;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 522 1257'%3E%3Cpath d='m15.89 264.4 495.4-23.36 0.9531 264.3-27.56 8.433-458.7-83.63-12.34-134 21.69 19.01z' fill-opacity='.03' stroke-opacity='.06275'/%3E%3Cpath d='m19.85 924.6 484.9 11.01 11.01-254.6-15.55-3.887-497.9 86.28 23.34 11.2-25.27 3.887z' fill-opacity='.03' stroke-opacity='.06275'/%3E%3C/svg%3E");
+  background-size: 90%;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 1;
+  content: '';
+  pointer-events: none;
+}
+
+body .glos h1{
+  color: #9a794f;
+  font-size: 6vh;
+  position: absolute;
+  top: 4vh;
+  font-weight: lighter;
+}
+
+body .glos .wrap{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-wrap: wrap;
+  width: 80vw;
+}
+
+body .glos .wrap li{
+  position: relative;
+  width: 34vw;
+  list-style: none;
+  font-size: 2vh;
+  min-height: 6vh;
+  line-height: 6vh;
+  padding-left: 8vh;
+  margin: 1vh 3vw;
+  /* text-align: center; */
+}
+
+body .glos .wrap li .inline{
+  display: inline-block;
+  padding: 0 1.5vh;
+  max-width: 1vh;
+  position: relative;
+  top: 0.4vh;
+  font-family: diceIcon;
+}
+
+
+body .glos .wrap li span{
+  font-size: 6vh;
+  position: absolute;
+  left: 3vh;
+  font-family: diceIcon;
+}
+body .glos .wrap li svg{
+  width: 6vh;
+  height: 6vh;
+  position: absolute;
+  left: -3vh;
+  font-family: diceIcon;
+}
+body .glos .wrap .cat{
+  width: 100%;
+  height: 6vh;
+  text-align: center;
+  padding-top: 4vh;
+  padding-bottom: 4vh;
+  font-size: 3vh;
+  color: black;
+}
+
+body .glos .next-glos{
+  position: absolute;
+  left: 85%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 8vh;
+  height: 10vh;
+  background-color: #9a784e;
+  clip-path: polygon(100% 50%, 0 0, 0 100%);
+  transition: .2s ease;
+}
+
+body .glos .next-glos:hover{
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
 
 body .top-bar .nav .map-icon span {
   position: relative;
@@ -1397,15 +1535,15 @@ body .top-bar .treasures::after {
 
 @-webkit-keyframes mapIcon {
   50% {
-    -webkit-transform: rotate(35deg);
-            transform: rotate(35deg);
+    -webkit-transform: rotate(-105deg);
+            transform: rotate(-105deg);
   }
 }
 
 @keyframes mapIcon {
   50% {
-    -webkit-transform: rotate(35deg);
-            transform: rotate(35deg);
+    -webkit-transform: rotate(-105deg);
+            transform: rotate(-105deg);
   }
 }
 
