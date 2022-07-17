@@ -45,7 +45,7 @@ const Save = ()=>{
       comTr: ["C1", "C3", "C25", "C33", "C34", "C35"],
       uncomTr: ["C4", "C7", "C8", "C2", "C18", "C29", 'C39'],
       rareTr: ["C27", "C32", "C36"],
-      shopTr: ["C19", "C20", "C21", "C23", "C8"],
+      shopTr: ["C19", "C20", "C21", "C23"],
       gemArr: ["C11", "C12", "C16", "C14", "C15"],
       mayanArr: ["C13", "C26", "C28", "C22"],
       seed: [],
@@ -54,6 +54,7 @@ const Save = ()=>{
       seaEvents: ['Gamble', 'Dive', 'BigFish', 'Whirlpool'],
       bosses: ['Mary', 'seymor', 'Stede'],
       SavedTreasures: ['C6'],
+      BBS: true,
     })
   }
 

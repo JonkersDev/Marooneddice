@@ -650,6 +650,9 @@ C0 = {
   
   // pl.TreasureArr = [comTr,comTr, comTr, comTr, uncomTr, uncomTr, uncomTr, rareTr, rareTr, gemArr];
   
+
+  const attks = ['F', 'C', 'B', 'G', 'R', 'T', 'E', 'D', 'K'];
+  const defens = ['S', 'I', 'H', 'Q', 'J', 'X'];
   //ENEMIES
   
   let royalNavyRun = () => {
@@ -960,29 +963,11 @@ const callBackup = ()=>{
     enChar.obj.dieList.forEach(d=>{rollDice(d)});
     charArr.forEach((c) => {
       c.char.img.addEventListener("mouseenter", () => {
-        if (
-          dragging[0] == "H" ||
-          dragging[0] == "I" ||
-          dragging[0] == "J" ||
-          dragging[0] == "Q" ||
-          dragging[0] == "S" ||
-          dragging[0] == "X" 
-        ) {
+        if ( defens.includes(dragging[0]) ) {
           if (c.type == "player") {
             c.classList.add("hovering");
           }
-        } else if (
-          dragging[0] == "B" ||
-          dragging[0] == "C" ||
-          dragging[0] == "D" ||
-          dragging[0] == "E" ||
-          dragging[0] == "F" ||
-          dragging[0] == "G" ||
-          dragging[0] == "K" ||
-          dragging[0] == "P" ||
-          dragging[0] == "R" ||
-          dragging[0] == "T"
-        ) {
+        } else if ( attks.includes(dragging[0]) || dragging[0] == "P" ) {
           if (c.type == "enemy") c.classList.add("hovering");
         }
       });
@@ -1264,7 +1249,7 @@ const callBackup = ()=>{
         playSound("hover");
         addToolTip(0, 0, sDie.obj.faceVal[s.dataset.side - 1][0]);
         let check = s.firstChild.firstChild.innerHTML;
-        if (check == check.toLowerCase() && check != "") s.classList.add("brand");
+        if (check == check.toLowerCase() && check != " ") s.classList.add("brand");
         else s.classList.add("hov");
         s.addEventListener("mouseleave", () => {
           s.classList.remove("hov", "brand");
@@ -1313,20 +1298,12 @@ const callBackup = ()=>{
   
   const addBrandmark = async (type) => {
     if (!type) type = brandmarks[await random(seed[7], brandmarks.length - 1)];
-    let addCurse = false;
-    while (addCurse == false) {
-      let r1 = Math.floor(Math.random() * pl.dieArr.length);
-      let r2 = Math.floor(Math.random() * 6);
-  
-      if (
-        pl.dieArr[r1].faceVal[r2][0] != pl.dieArr[r1].faceVal[r2][0].toLowerCase()
-      ) {
-        pl.spareFaces.push(pl.dieArr[r1].faceVal[r2]);
-        pl.dieArr[r1].faceVal[r2] = [type];
-        addCurse = true;
-        upgradeFace([type]);
-      }
-    }
+    let r1 = Math.floor(Math.random() * pl.dieArr.length);
+    let r2 = Math.floor(Math.random() * 6);
+    if(pl.dieArr[r1].faceVal[r2][0] != pl.dieArr[r1].faceVal[r2][0].toLowerCase()) pl.spareFaces.push(pl.dieArr[r1].faceVal[r2]);
+    pl.dieArr[r1].faceVal[r2] = [type];
+    addCurse = true;
+    upgradeFace([type]);
   };
   //STANDARD FUNCTIONS
   
@@ -1701,7 +1678,7 @@ const addToolTip = async (dieobj, die, face, str) => {
   }
 
   //SHOW TOOLTIP
-  await sleep(800);
+  await sleep(300);
   if (hov == true) tooltip.style.opacity = "1";
 };
 
@@ -1815,11 +1792,16 @@ const removeFromArray = async (arr, obj) => {
 
 async function rollDice(die) {
     if (die.classList.contains("chained")) return;
-  
-    // let result = 6;
-    let result = (await random(seed[1], 5)) + 1;
-  
-    if (die.obj.faceVal[result - 1] == "x") result = await newResult(die.obj);
+    
+    let rollable = [];
+    
+    for( i = 0; i < 6; i++ ){
+      if(die.obj.faceVal[i][0] != 'x') rollable.push(i + 1);
+    }
+
+    let result = 1;
+    if(rollable.length) result = rollable[(await random(seed[1], rollable.length -1))];
+
     die.dataset.roll = result;
     die.obj.roll = die.obj.faceVal[result - 1];
     toggleClasses(die);
@@ -1832,7 +1814,7 @@ async function rollDice(die) {
       if (v == "S" || v == "H" || v == "I" || v == "J") die.obj.target = owner;
       else die.obj.target = pl;
     }
-    if (val == val.toLowerCase()) {
+    if (val == val.toLowerCase() && val != " ") {
       brandMark[val](die, owner);
       if (owner.restraint == true) {
         charArr.forEach((c) => {
@@ -1868,15 +1850,7 @@ async function rollDice(die) {
       let effect = eval(owner.effect);
           effect();
     },
-  };
-  
-  const newResult = async (die) => {
-    return new Promise(async(resolve, reject)=>{
-      let val = (await random(seed[1], 5));
-      if(die.faceVal[val] != 'x') resolve(val);
-      else val = await newResult();
-      resolve(val)
-    })
+    x: ()=>{ hit(pl, 1); },
   };
   
   function toggleClasses(die) {
@@ -2189,60 +2163,32 @@ const makeLines = async (r) => {
   }
 };
 
+const pxtovh = (px)=>{
+  let vh = window.innerHeight;
+  vh = vh / 100;
+  vh = px / vh;
+  return vh;
+} 
+console.log(pxtovh(100));
+
 const drawLine = async (startX, startY, endX, endY) => {
   return new Promise(async (resolve, reject) => {
     let newLine = makeElmnt("div", "op-path", "", map);
     let boxHeight = endY - startY;
     if (endX - startX > 0 && endY - startY > 0) {
       let boxWidth = endX - startX;
-      newLine.style = `position: absolute; top: ${startY}px; left: ${startX}px; width: ${boxWidth}px; height: ${
-        endY - endY
-      }px`;
-      newLine.innerHTML = `<svg viewBox="0 0 ${boxWidth} ${
-        endY - startY
-      }" xmlns="http://www.w3.org/2000/svg">
-      <path fill="none" d="M0,0 Q0,${
-        boxHeight / ((await random(seed[1], 9)) + 15)
-      } ${boxWidth / 5},${boxHeight / 5} T${(boxWidth / 5) * 2},${
-        (boxHeight / 5) * 2
-      } T${(boxWidth / 5) * 3},${(boxHeight / 5) * 3} T${(boxWidth / 5) * 4},${
-        (boxHeight / 5) * 4
-      } T${boxWidth},${boxHeight}"/>
-    </svg>`;
+      newLine.style = `position: absolute; top: ${pxtovh(startY)}vh; left: ${pxtovh(startX)}vh; width: ${pxtovh(boxWidth)}vh; height: ${pxtovh(endY - endY)}px`;
+      newLine.innerHTML = `<svg viewBox="0 0 ${boxWidth} ${endY - startY}" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0,0 Q0,${boxHeight / ((await random(seed[1], 9)) + 15)} ${boxWidth / 5},${boxHeight / 5} T${(boxWidth / 5) * 2},${(boxHeight / 5) * 2} T${(boxWidth / 5) * 3},${(boxHeight / 5) * 3} T${(boxWidth / 5) * 4},${(boxHeight / 5) * 4} T${boxWidth},${boxHeight}"/></svg>`;
       newLine.classList.add("one");
     } else if (endX - startX < 2 && endX - startX > -2) {
-      newLine.style = `position: absolute; top: ${startY}px; left: ${
-        startX - 25
-      }px; width: 50px;`;
-      newLine.innerHTML = `<svg viewBox="0 0 50 ${
-        endY - startY
-      }" xmlns="http://www.w3.org/2000/svg">
-      <path fill="none" d="M25,0 Q${(await random(seed[1], 9)) + 25},10 25,${
-        boxHeight / 5
-      } T25,${(boxHeight / 5) * 2} T25,${(boxHeight / 5) * 3} T25,${
-        (boxHeight / 5) * 4
-      } T25,${boxHeight}"/>
-    </svg>`;
+      newLine.style = `position: absolute; top: ${pxtovh(startY)}vh; left: ${pxtovh(startX - 25)}vh; width: ${pxtovh(50)}vh;`;
+      newLine.innerHTML = `<svg viewBox="0 0 50 ${endY - startY}" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M25,0 Q${(await random(seed[1], 9)) + 25},10 25,${boxHeight / 5} T25,${(boxHeight / 5) * 2} T25,${(boxHeight / 5) * 3} T25,${(boxHeight / 5) * 4} T25,${boxHeight}"/></svg>`;
       newLine.classList.add("r-path");
       newLine.classList.add("two");
     } else {
       let boxWidth = startX - endX;
-      newLine.style = `position: absolute; top: ${startY}px; left: ${endX}px; width: ${
-        startX - endX
-      }px; height: ${endY - endY}px`;
-      newLine.innerHTML = `<svg viewBox="0 0 ${boxWidth} ${
-        endY - startY
-      }" xmlns="http://www.w3.org/2000/svg">
-      <path fill="none" d="M${boxWidth},0 Q${boxWidth},${
-        boxHeight / ((await random(seed[1], 9)) + 15)
-      } ${boxWidth - boxWidth / 5},${boxHeight / 5} T${
-        boxWidth - (boxWidth / 5) * 2
-      },${(boxHeight / 5) * 2} T${boxWidth - (boxWidth / 5) * 3},${
-        (boxHeight / 5) * 3
-      } T${boxWidth - (boxWidth / 5) * 4},${
-        (boxHeight / 5) * 4
-      } T0,${boxHeight}"/>
-    </svg>`;
+      newLine.style = `position: absolute; top: ${pxtovh(startY)}vh; left: ${pxtovh(endX)}vh; width: ${pxtovh(startX - endX)}vh; height: ${pxtovh(endY - endY)}vh`;
+      newLine.innerHTML = `<svg viewBox="0 0 ${boxWidth} ${endY - startY}" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M${boxWidth},0 Q${boxWidth},${boxHeight / ((await random(seed[1], 9)) + 15)} ${boxWidth - boxWidth / 5},${boxHeight / 5} T${boxWidth - (boxWidth / 5) * 2},${(boxHeight / 5) * 2} T${boxWidth - (boxWidth / 5) * 3},${(boxHeight / 5) * 3} T${boxWidth - (boxWidth / 5) * 4},${(boxHeight / 5) * 4} T0,${boxHeight}"/></svg>`;
       newLine.classList.add("three");
     }
     resolve(newLine);
@@ -2578,27 +2524,9 @@ function dragElement(elmnt) {
           elmnt.getBoundingClientRect().y <
             c.getBoundingClientRect().y + c.getBoundingClientRect().height
         ) {
-          if (
-            dragging[0] == "H" ||
-            dragging[0] == "I" ||
-            dragging[0] == "J" ||
-            dragging[0] == "Q" ||
-            dragging[0] == "S" ||
-            dragging[0] == "X"
-          ) {
+          if ( defens.includes(dragging[0]) ) {
             if (c.type == "player") c.classList.add("hovering");
-          } else if (
-            dragging[0] == "B" ||
-            dragging[0] == "C" ||
-            dragging[0] == "D" ||
-            dragging[0] == "E" ||
-            dragging[0] == "F" ||
-            dragging[0] == "G" ||
-            dragging[0] == "K" ||
-            dragging[0] == "P" ||
-            dragging[0] == "R" ||
-            dragging[0] == "T"
-          ) {
+          } else if ( attks.includes(dragging[0]) ||dragging[0] == "P" ) {
             if (c.type == "enemy") c.classList.add("hovering");
           }
         } else c.classList.remove("hovering");
@@ -2858,29 +2786,11 @@ const enterCombat = async (room, btn, enArr, type) => {
   //ADD HOVERING INDICATOR
   charArr.forEach((c) => {
     c.char.img.addEventListener("mouseenter", () => {
-      if (
-        dragging[0] == "H" ||
-        dragging[0] == "I" ||
-        dragging[0] == "J" ||
-        dragging[0] == "Q" ||
-        dragging[0] == "S" ||
-        dragging[0] == "X" 
-      ) {
+      if ( defens.includes(dragging[0]) ) {
         if (c.type == "player") {
           c.classList.add("hovering");
         }
-      } else if (
-        dragging[0] == "B" ||
-        dragging[0] == "C" ||
-        dragging[0] == "D" ||
-        dragging[0] == "E" ||
-        dragging[0] == "F" ||
-        dragging[0] == "G" ||
-        dragging[0] == "K" ||
-        dragging[0] == "P" ||
-        dragging[0] == "R" ||
-        dragging[0] == "T"
-      ) {
+      } else if ( attks.includes(dragging[0]) || dragging[0] == "P" ) {
         if (c.type == "enemy") c.classList.add("hovering");
       }
     });
@@ -3022,6 +2932,13 @@ const useDie = async (owner, die, target, val) => {
         } 
       })
     };
+
+    if(target.RD){
+      if (attks.includes(val[0])) {
+        rollDice(target.dieList[Math.floor(Math.random() * target.dieList.length)]);
+      }
+    }
+
     for (i = 0; i < val.length; i++) {
       if (win == false) {
         playSound(val[i]);
@@ -3251,10 +3168,6 @@ const hit = async (target, val, icon, owner, ani, ind) => {
     if (owner.Ruby && ind == 0) val += owner.r;
   }
   if (val < 0) val = -1;
-  if(val >= 0 && target.RD){
-    console.log('reroll')
-    rollDice(target.dieList[await random(seed[1], target.dieList.length -1)])
-  }
   //DMG COUNTER
   let dam = makeElmnt("p", "dam", "", target.container);
   //HIT ICON ON CONTAINER
@@ -5884,7 +5797,7 @@ royalNavy = {
           pl.dieArr.forEach(a=>{
             a.faceVal.map((d, i)=>{
               if(d[0] == d[0].toLowerCase()){
-                a.faceVal[i] = [];
+                a.faceVal[i] = [' '];
               } 
             })
           })
@@ -5915,20 +5828,31 @@ royalNavy = {
           return `Upgrade a random dieface [ -${CursedHammer.dmg} hp ]`;
         },
         effect: async (button) => {
-          heal(pl, -CursedHammer.dmg);
           let count = 0;
           let face = "";
-          while (count == 0) {
-            face =
-              pl.dieArr[await random(seed[6], pl.dieArr.length - 1)].faceVal[await random(seed[6], 6)];
-            if (face[0] != face[0].toLowerCase() && face.length < 6) {
-              face.push(face[0]);
-              count++;
+          let free = [];
+          let freeDie = [];
+          for(i=0;i<pl.dieArr.length;i++){
+            let die = [];
+            for(j=0; j<6; j++){
+              let face = pl.dieArr[i].faceVal[j];
+              if(face[0] != face[0].toLowerCase() && face.length < 6){
+                die.push(j);
+              }
             }
+            if(die.length) freeDie.push(i); free.push(die);
           }
-          CursedHammer.dmg += 4;
-          document.querySelector(".event-option-list").firstChild.innerText = `Upgrade a random dieface [ -${CursedHammer.dmg} hp ]`;
-          await upgradeFace(face);
+          if(freeDie.length){
+            heal(pl, -CursedHammer.dmg);
+            let chozenDie = freeDie[await random(seed[6], freeDie.length - 1)];
+            let chozenFace = free[chozenDie][await random(seed[6], free[chozenDie].length - 1)];
+            face = pl.dieArr[chozenDie].faceVal[chozenFace];
+            face.push(face[0]);
+            count++;
+            CursedHammer.dmg += 4;
+            document.querySelector(".event-option-list").firstChild.innerText = `Upgrade a random dieface [ -${CursedHammer.dmg} hp ]`;
+            await upgradeFace(face);
+          }
         }
       }, 
       {
@@ -6276,16 +6200,18 @@ royalNavy = {
       pl.seaEvents.push('UnderwaterChest')
     }
     if(pl.stage == 0){
-      // pl.tut = true;
+      pl.tut = true;
     }
     await shuffle(pl.shopTr, seed[5]);
     await shuffle(pl.comTr, seed[5]);
     await shuffle(pl.uncomTr, seed[5]);
     await shuffle(pl.rareTr, seed[5]);
     await shuffle(pl.gemArr, seed[5]);
+    await shuffle(pl.mayanArr, seed[5]);
     await shuffle(pl.landEvents, seed[4]);
     await shuffle(pl.seaEvents, seed[4]);
     await shuffle(pl.bosses, seed[1]);
+    await shuffle(eliteEnemys, seed[2]);
     roomTip = {
       B: `Captain<br>${window[pl.bosses[0]].name} ${window[pl.bosses[0]].Lastname}`,
       A: "pirate",
