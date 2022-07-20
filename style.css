@@ -31,6 +31,10 @@ img {
 html {
   scroll-behavior: smooth;
   height: -webkit-fill-available;
+  height: 100%;
+  height: -moz-available;       
+  height: -webkit-fill-available;
+  height: fill-available;
 }
 
 .mouse-down {
@@ -72,6 +76,10 @@ body {
   overflow: hidden;
   width: 100vw;
   height: -webkit-fill-available;
+  height: 100%;
+  height: -moz-available;       
+  height: -webkit-fill-available;
+  height: fill-available;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
