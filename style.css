@@ -30,6 +30,7 @@ img {
 
 html {
   scroll-behavior: smooth;
+  height: -webkit-fill-available;
 }
 
 .mouse-down {
@@ -70,7 +71,7 @@ body {
   position: fixed;
   overflow: hidden;
   width: 100vw;
-  height: 100vh;
+  height: -webkit-fill-available;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
