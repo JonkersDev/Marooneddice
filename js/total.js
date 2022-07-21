@@ -1969,7 +1969,7 @@ const makeMap = async () => {
 const makeWave = async (wave, oldWave) => {
   let offPlaceholder = 0;
   let placeholder = makeElmnt("div", "placeholder");
-  placeholder.style.top = `-${14 - waveCount}px`;
+  placeholder.style.top = `-${pxtovh(14 - waveCount)}vh`;
   placeholder.id = `floor${waveCount + pl.floorLvl}`;
   map.insertBefore(placeholder, map.firstChild);
   if (waveCount < waveTotal) {
@@ -2164,7 +2164,7 @@ const makeLines = async (r) => {
 };
 
 const pxtovh = (px)=>{
-  let vh = window.innerHeight;
+  let vh = document.body.clientHeight;
   vh = vh / 100;
   vh = px / vh;
   return vh;
@@ -2177,7 +2177,7 @@ const drawLine = async (startX, startY, endX, endY) => {
     let boxHeight = endY - startY;
     if (endX - startX > 0 && endY - startY > 0) {
       let boxWidth = endX - startX;
-      newLine.style = `position: absolute; top: ${pxtovh(startY)}vh; left: ${pxtovh(startX)}vh; width: ${pxtovh(boxWidth)}vh; height: ${pxtovh(endY - endY)}px`;
+      newLine.style = `position: absolute; top: ${pxtovh(startY)}vh; left: ${pxtovh(startX)}vh; width: ${pxtovh(boxWidth)}vh; height: ${pxtovh(endY - endY)}vh`;
       newLine.innerHTML = `<svg viewBox="0 0 ${boxWidth} ${endY - startY}" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0,0 Q0,${boxHeight / ((await random(seed[1], 9)) + 15)} ${boxWidth / 5},${boxHeight / 5} T${(boxWidth / 5) * 2},${(boxHeight / 5) * 2} T${(boxWidth / 5) * 3},${(boxHeight / 5) * 3} T${(boxWidth / 5) * 4},${(boxHeight / 5) * 4} T${boxWidth},${boxHeight}"/></svg>`;
       newLine.classList.add("one");
     } else if (endX - startX < 2 && endX - startX > -2) {
