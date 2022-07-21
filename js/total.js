@@ -1,4 +1,6 @@
 
+window.scrollTo(0,1);
+
 const soundBoard = {
   B: "bomb",
   C: "sword",
