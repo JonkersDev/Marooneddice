@@ -2166,7 +2166,7 @@ const makeLines = async (r) => {
 };
 
 const pxtovh = (px)=>{
-  let vh = document.body.clientHeight;
+  let vh = document.documentElement.clientHeight;
   vh = vh / 100;
   vh = px / vh;
   return vh;
