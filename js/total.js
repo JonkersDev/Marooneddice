@@ -2165,11 +2165,13 @@ const makeLines = async (r) => {
   }
 };
 
+let gameRect = document.querySelector('#game').getClientRects();
+let vh = gameRect[0].height;
 const pxtovh = (px)=>{
-  let vh = window.screen.height;
-  vh = vh / 100;
-  vh = px / vh;
-  return vh;
+  console.log(vh);
+  onevh = vh / 100;
+  elmvh = px / onevh;
+  return elmvh;
 } 
 console.log(pxtovh(100));
 
@@ -2179,7 +2181,7 @@ const drawLine = async (startX, startY, endX, endY) => {
     let boxHeight = endY - startY;
     if (endX - startX > 0 && endY - startY > 0) {
       let boxWidth = endX - startX;
-      newLine.style = `position: absolute; top: ${pxtovh(startY)}vh; left: ${pxtovh(startX)}vh; width: ${pxtovh(boxWidth)}vh; height: ${pxtovh(endY - endY)}vh`;
+      newLine.style = `position: absolute; top: ${pxtovh(startY)}vh; left: ${pxtovh(startX)}vh; width: ${pxtovh(boxWidth)}vh;`;
       newLine.innerHTML = `<svg viewBox="0 0 ${boxWidth} ${endY - startY}" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0,0 Q0,${boxHeight / ((await random(seed[1], 9)) + 15)} ${boxWidth / 5},${boxHeight / 5} T${(boxWidth / 5) * 2},${(boxHeight / 5) * 2} T${(boxWidth / 5) * 3},${(boxHeight / 5) * 3} T${(boxWidth / 5) * 4},${(boxHeight / 5) * 4} T${boxWidth},${boxHeight}"/></svg>`;
       newLine.classList.add("one");
     } else if (endX - startX < 2 && endX - startX > -2) {
@@ -2189,7 +2191,7 @@ const drawLine = async (startX, startY, endX, endY) => {
       newLine.classList.add("two");
     } else {
       let boxWidth = startX - endX;
-      newLine.style = `position: absolute; top: ${pxtovh(startY)}vh; left: ${pxtovh(endX)}vh; width: ${pxtovh(startX - endX)}vh; height: ${pxtovh(endY - endY)}vh`;
+      newLine.style = `position: absolute; top: ${pxtovh(startY)}vh; left: ${pxtovh(endX)}vh; width: ${pxtovh(startX - endX)}vh;`;
       newLine.innerHTML = `<svg viewBox="0 0 ${boxWidth} ${endY - startY}" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M${boxWidth},0 Q${boxWidth},${boxHeight / ((await random(seed[1], 9)) + 15)} ${boxWidth - boxWidth / 5},${boxHeight / 5} T${boxWidth - (boxWidth / 5) * 2},${(boxHeight / 5) * 2} T${boxWidth - (boxWidth / 5) * 3},${(boxHeight / 5) * 3} T${boxWidth - (boxWidth / 5) * 4},${(boxHeight / 5) * 4} T0,${boxHeight}"/></svg>`;
       newLine.classList.add("three");
     }

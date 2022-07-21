@@ -3,6 +3,9 @@ const body = document.body;
 const checkInter = ()=>{
   interaction = true;
   body.removeEventListener('click', checkInter);
+  let script = document.createElement('script');
+  script.src = 'js/total.js';
+  body.append(script);
 }
 body.addEventListener('click', checkInter);
 body.addEventListener('keydown', (e)=>{
@@ -12,9 +15,7 @@ body.addEventListener('keydown', (e)=>{
 })
 
 
-let script = document.createElement('script');
-script.src = 'js/total.js';
-body.append(script);
+
 document.querySelector('.set-icon').addEventListener('click', ()=>{
     body.requestFullscreen();
 })
